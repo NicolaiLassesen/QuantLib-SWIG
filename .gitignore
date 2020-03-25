@@ -41,6 +41,7 @@ Ruby/quantlib_wrap.cpp
 **/Release
 **/bin/*.xml
 **/bin/*.manifest
+**/obj
 
 # CLion
 .idea
@@ -92,3 +93,5 @@ R/R/QuantLib.R
 R/QuantLib.RData
 
 .vscode
+*.DotSettings
+/.vs

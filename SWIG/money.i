@@ -26,6 +26,17 @@
 using QuantLib::Money;
 %}
 
+#if defined(SWIGCSHARP)
+%typemap(cscode) Money %{
+    public override string ToString()
+    {
+        Currency ccy = this.currency();
+        double value = this.value();
+        return $"{ccy} {value:N2}";
+    }
+%}
+#endif
+
 class Money {
     #if defined(SWIGJAVA)
     %rename("compare") __cmp__;
@@ -40,7 +51,10 @@ class Money {
     #if defined(SWIGPYTHON) || defined(SWIGJAVA)
     Money operator+() const;
     Money operator-() const;
+    #endif
+
     %extend {
+        #if defined(SWIGPYTHON) || defined(SWIGJAVA)
         Money operator+(const Money& m) { return *self+m; }
         Money operator-(const Money& m) { return *self-m; }
         Money operator*(Decimal x) { return *self*x; }
@@ -69,13 +83,13 @@ class Money {
             else
                 return 1;
         }
+        #endif
         std::string __str__() {
             std::ostringstream out;
             out << *self;
             return out.str();
         }
     }
-    #endif
 
     enum ConversionType { NoConversion,
                           BaseCurrencyConversion,

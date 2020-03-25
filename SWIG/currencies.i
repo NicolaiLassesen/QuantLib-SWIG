@@ -32,6 +32,41 @@ using QuantLib::Currency;
 using QuantLib::Money;
 %}
 
+#if defined(SWIGCSHARP)
+%typemap(cscode) Currency %{
+    public bool Equals(Currency other)
+    {
+        if (ReferenceEquals(null, other)) return false;
+        if (ReferenceEquals(this, other)) return true;
+        return this.code() == other.code();
+    }
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(null, obj)) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (!(obj is Currency)) return false;
+        return Equals((Currency)obj);
+    }
+    public override int GetHashCode()
+    {
+        string code = this.code();
+        return code.GetHashCode();
+    }
+    public static bool operator ==(Currency left, Currency right)
+    {
+        return Equals(left, right);
+    }
+    public static bool operator !=(Currency left, Currency right)
+    {
+        return !Equals(left, right);
+    }
+    public override string ToString()
+    {
+        return this.code();
+    }
+%}
+#endif
+
 class Currency {
   public:
     const std::string& name() const;

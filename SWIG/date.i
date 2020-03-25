@@ -315,6 +315,12 @@ function(from) {Period(from)})
 
 #if defined(SWIGCSHARP)
 %typemap(cscode) Date %{
+    public static implicit operator Date(global::System.DateTime date)
+    {
+        if (date.Minute == 0 && date.Second == 0 && date.Millisecond == 0)
+            return new Date(date.Day, (Month)date.Month, date.Year);
+        return new Date(date.Day, (Month)date.Month, date.Year, date.Hour, date.Minute, date.Second, date.Millisecond);
+    }
     public static Date operator+(Date d, int i) {
         return new Date(d.serialNumber() + i);
     }
@@ -364,11 +370,16 @@ function(from) {Period(from)})
         {
            return false;
         }
-   }
-   public override int GetHashCode()
-   {
-       return this.serialNumber();
-   }
+    }
+    public override int GetHashCode()
+    {
+        return this.serialNumber();
+    }
+    public override string ToString()
+    {
+        return this.__str__();
+    }
+
 %}
 #endif
 

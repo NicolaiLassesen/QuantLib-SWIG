@@ -58,7 +58,6 @@ using QuantLib::Index;
 %}
 
 %shared_ptr(Index)
-
 class Index : public Observable {
   private:
     Index();

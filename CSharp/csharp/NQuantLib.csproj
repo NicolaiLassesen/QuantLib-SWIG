@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <Import Project="../QuantLib.props" />
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
@@ -29,7 +29,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -101,7 +101,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|Win32'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\$(qlCompilerTag)\$(Platform)\$(Configuration)\</OutputPath>
+    <OutputPath>bin\x86\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <BaseAddress>285212672</BaseAddress>
     <FileAlignment>4096</FileAlignment>
@@ -109,6 +109,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|Win32'">
     <OutputPath>bin\$(qlCompilerTag)\$(Platform)\$(Configuration)\</OutputPath>
@@ -119,6 +120,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -130,6 +132,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\$(qlCompilerTag)\$(Platform)\$(Configuration)\</OutputPath>
@@ -140,6 +143,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System">
@@ -311,7 +315,7 @@
     <Compile Include="CalibratedModel.cs" />
     <Compile Include="CalibratedModelHandle.cs" />
     <Compile Include="CalibrationErrorTuple.cs" />
-    <Compile Include="CalibrationHelperBase.cs" />
+    <Compile Include="CalibrationHelper.cs" />
     <Compile Include="CalibrationHelperVector.cs" />
     <Compile Include="CalibrationPair.cs" />
     <Compile Include="CalibrationSet.cs" />
@@ -374,6 +378,7 @@
     <Compile Include="Coupon.cs" />
     <Compile Include="CPI.cs" />
     <Compile Include="CPIBond.cs" />
+    <Compile Include="CPICoupon.cs" />
     <Compile Include="CPISwap.cs" />
     <Compile Include="CreditDefaultSwap.cs" />
     <Compile Include="Cubic.cs" />
@@ -503,6 +508,8 @@
     <Compile Include="ExchangeRateManager.cs" />
     <Compile Include="Exercise.cs" />
     <Compile Include="ExponentialSplinesFitting.cs" />
+    <Compile Include="Extensions\DateExtension.cs" />
+    <Compile Include="Extensions\ForeignExchangeForwardExtension.cs" />
     <Compile Include="ExtOUWithJumpsProcess.cs" />
     <Compile Include="ExtendedOrnsteinUhlenbeckProcess.cs" />
     <Compile Include="FaceValueAccrualClaim.cs" />
@@ -553,11 +560,15 @@
     <Compile Include="FloatFloatSwaption.cs" />
     <Compile Include="Floor.cs" />
     <Compile Include="FloorTruncation.cs" />
+    <Compile Include="ForeignExchangeForward.cs" />
     <Compile Include="Forward.cs" />
     <Compile Include="ForwardCurve.cs" />
     <Compile Include="ForwardEuropeanEngine.cs" />
+    <Compile Include="ForwardExchangerate.cs" />
+    <Compile Include="ForwardExchangeRateVector.cs" />
     <Compile Include="ForwardFlat.cs" />
     <Compile Include="ForwardFlatInterpolation.cs" />
+    <Compile Include="ForwardPointsEngine.cs" />
     <Compile Include="ForwardRate.cs" />
     <Compile Include="ForwardRateAgreement.cs" />
     <Compile Include="ForwardSpreadedTermStructure.cs" />
@@ -572,7 +583,10 @@
     <Compile Include="FritschButlandLogCubic.cs" />
     <Compile Include="Futures.cs" />
     <Compile Include="FuturesRateHelper.cs" />
+    <Compile Include="FxForwardPointTermStructure.cs" />
+    <Compile Include="FxForwardPointTermStructureHandle.cs" />
     <Compile Include="FxSwapRateHelper.cs" />
+    <Compile Include="FxTerms.cs" />
     <Compile Include="G2.cs" />
     <Compile Include="G2ForwardProcess.cs" />
     <Compile Include="G2Process.cs" />
@@ -653,6 +667,7 @@
     <Compile Include="IndexManager.cs" />
     <Compile Include="India.cs" />
     <Compile Include="Indonesia.cs" />
+    <Compile Include="InflationCoupon.cs" />
     <Compile Include="InflationIndex.cs" />
     <Compile Include="InflationTermStructure.cs" />
     <Compile Include="INRCurrency.cs" />
@@ -663,6 +678,7 @@
     <Compile Include="InterestRate.cs" />
     <Compile Include="InterestRateIndex.cs" />
     <Compile Include="InterestRateVector.cs" />
+    <Compile Include="InterpolatedFxForwardPointTermStructureLinear.cs" />
     <Compile Include="IntervalPrice.cs" />
     <Compile Include="IntervalPriceTimeSeries.cs" />
     <Compile Include="IntervalPriceVector.cs" />
@@ -686,6 +702,7 @@
     <Compile Include="ISKCurrency.cs" />
     <Compile Include="Israel.cs" />
     <Compile Include="Italy.cs" />
+    <Compile Include="IterativeBootstrap.cs" />
     <Compile Include="ITLCurrency.cs" />
     <Compile Include="JamshidianSwaptionEngine.cs" />
     <Compile Include="Japan.cs" />
@@ -903,6 +920,7 @@
     <Compile Include="RelinkableCapFloorTermVolatilityStructureHandle.cs" />
     <Compile Include="RelinkableDefaultProbabilityTermStructureHandle.cs" />
     <Compile Include="RelinkableDeltaVolQuoteHandle.cs" />
+    <Compile Include="RelinkableFxForwardPointTermStructureHandle.cs" />
     <Compile Include="RelinkableLocalVolTermStructureHandle.cs" />
     <Compile Include="RelinkableOptionletVolatilityStructureHandle.cs" />
     <Compile Include="RelinkableQuoteHandle.cs" />
@@ -1011,15 +1029,18 @@
     <Compile Include="SWIGTYPE_p_boost__optionalT_bool_t.cs" />
     <Compile Include="SWIGTYPE_p_boost__optionalT_VolatilityType_t.cs" />
     <Compile Include="SWIGTYPE_p_boost__shared_ptrT_Bond_t.cs" />
-    <Compile Include="SWIGTYPE_p_boost__shared_ptrT_EndCriteria_t.cs" />
+    <Compile Include="SWIGTYPE_p_boost__shared_ptrT_FxForwardPointTermStructure_t.cs" />
     <Compile Include="SWIGTYPE_p_boost__shared_ptrT_SwaptionHelper_t.cs" />
     <Compile Include="SWIGTYPE_p_boost__shared_ptrT_Swaption_t.cs" />
     <Compile Include="SWIGTYPE_p_boost__shared_ptrT_VanillaSwap_t.cs" />
     <Compile Include="SWIGTYPE_p_DisposableT_Array_t.cs" />
     <Compile Include="SWIGTYPE_p_DisposableT_std__vectorT_double_t_t.cs" />
     <Compile Include="SWIGTYPE_p_EndCriteria__Type.cs" />
+    <Compile Include="SWIGTYPE_p_ForwardExchangeRate.cs" />
+    <Compile Include="SWIGTYPE_p_HandleT_FxForwardPointTermStructure_t.cs" />
     <Compile Include="SWIGTYPE_p_std__pairT_std__size_t_std__size_t_t.cs" />
     <Compile Include="SWIGTYPE_p_std__size_t.cs" />
+    <Compile Include="SWIGTYPE_p_std__vectorT_ForwardExchangeRate_t.cs" />
     <Compile Include="SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t.cs" />
     <Compile Include="SwingExercise.cs" />
     <Compile Include="Switzerland.cs" />
@@ -1150,6 +1171,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
