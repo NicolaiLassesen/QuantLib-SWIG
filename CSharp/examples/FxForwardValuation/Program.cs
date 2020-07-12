@@ -4,6 +4,7 @@ using CfAnalytics.QuantLib;
 using CfAnalytics.QuantLib.Instruments;
 using CfAnalytics.QuantLib.PricingEngines.Fx;
 using CfAnalytics.QuantLib.TermStructures;
+using CfAnalytics.QuantLib.TermStructures.YieldTermStructures;
 using BusinessDayConvention = CfAnalytics.BusinessDayConvention;
 using Currency = CfAnalytics.Currency;
 using ExchangeRate = CfAnalytics.QuantLib.ExchangeRate;
@@ -251,14 +252,14 @@ namespace FxForwardValuation
 
         private static YieldTermStructure DiscountingEurCurve(DateTime todaysDate)
         {
-            var builder = new YieldTermStructure.Builder(todaysDate)
+            var builder = new SwapCurveBootstrapBuilder(todaysDate)
             {
                 SpotDays = 0,
                 Currency = Currency.EUR,
                 Calendar = Calendar.TARGET,
-                DayCounter = DayCounter.ActualActualISDA,
-                DepositConvention = BusinessDayConvention.ModifiedFollowing,
-                DepositDayCounter = DayCounter.Actual360,
+                DayCountBasis = DayCounter.ActualActualISDA,
+                DepositRollConvention = BusinessDayConvention.ModifiedFollowing,
+                DepositBasis = DayCounter.Actual360,
                 DepositRates = new[]
                 {
                     (new Period(1, TimeUnit.Weeks), -0.00518),
@@ -273,14 +274,14 @@ namespace FxForwardValuation
 
         private static YieldTermStructure DiscountingUsdCurve(DateTime todaysDate)
         {
-            var builder = new YieldTermStructure.Builder(todaysDate)
+            var builder = new SwapCurveBootstrapBuilder(todaysDate)
             {
                 SpotDays = 0,
                 Currency = Currency.USD,
                 Calendar = Calendar.UnitedStatesFederalReserve,
-                DayCounter = DayCounter.ActualActualISDA,
-                DepositConvention = BusinessDayConvention.ModifiedFollowing,
-                DepositDayCounter = DayCounter.Actual360,
+                DayCountBasis = DayCounter.ActualActualISDA,
+                DepositRollConvention = BusinessDayConvention.ModifiedFollowing,
+                DepositBasis = DayCounter.Actual360,
                 DepositRates = new[]
                 {
                     (new Period(1, TimeUnit.Weeks), 0.01568  ),
@@ -295,14 +296,14 @@ namespace FxForwardValuation
 
         private static YieldTermStructure DiscountingGbpCurve(DateTime todaysDate)
         {
-            var builder = new YieldTermStructure.Builder(todaysDate)
+            var builder = new SwapCurveBootstrapBuilder(todaysDate)
             {
                 SpotDays = 0,
                 Currency = Currency.GBP,
                 Calendar = Calendar.UnitedKingdomSettlement,
-                DayCounter = DayCounter.ActualActualISDA,
-                DepositConvention = BusinessDayConvention.ModifiedFollowing,
-                DepositDayCounter = DayCounter.Actual365FixedStandard,
+                DayCountBasis = DayCounter.ActualActualISDA,
+                DepositRollConvention = BusinessDayConvention.ModifiedFollowing,
+                DepositBasis = DayCounter.Actual365FixedStandard,
                 DepositRates = new[]
                 {
                     (new Period(1, TimeUnit.Weeks), 0.00681  ),

@@ -1,4 +1,5 @@
 ﻿using System;
+
 // ReSharper disable InconsistentNaming
 
 namespace CfAnalytics.QuantLib
@@ -18,9 +19,17 @@ namespace CfAnalytics.QuantLib
         Actual365FixedStandard,
         Actual365FixedCanadian,
         Actual365FixedNoLeap,
-
+        
         Actual360,
-        Actual360LD
+        Actual360LD,
+
+        Thirty360,
+        Thirty360BondBasis,
+        Thirty360EurobondBasis,
+        Thirty360European,
+        //Thirty360German,
+        Thirty360Italian,
+        Thirty360USA,
     }
 
     internal static class DayCounterExt
@@ -57,6 +66,20 @@ namespace CfAnalytics.QuantLib
                     return new global::QuantLib.Actual360();
                 case DayCounter.Actual360LD:
                     return new global::QuantLib.Actual360(true);
+                case DayCounter.Thirty360:
+                    return new global::QuantLib.Thirty360();
+                case DayCounter.Thirty360BondBasis:
+                    return new global::QuantLib.Thirty360(global::QuantLib.Thirty360.Convention.BondBasis);
+                case DayCounter.Thirty360EurobondBasis:
+                    return new global::QuantLib.Thirty360(global::QuantLib.Thirty360.Convention.EurobondBasis);
+                case DayCounter.Thirty360European:
+                    return new global::QuantLib.Thirty360(global::QuantLib.Thirty360.Convention.European);
+                //case DayCounter.Thirty360German:
+                //    return new global::QuantLib.Thirty360(global::QuantLib.Thirty360.Convention.German);
+                case DayCounter.Thirty360Italian:
+                    return new global::QuantLib.Thirty360(global::QuantLib.Thirty360.Convention.Italian);
+                case DayCounter.Thirty360USA:
+                    return new global::QuantLib.Thirty360(global::QuantLib.Thirty360.Convention.USA);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(dayCounter), dayCounter, null);
             }

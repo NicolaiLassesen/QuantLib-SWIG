@@ -1,6 +1,5 @@
 ﻿using System;
 using CfAnalytics.Utilities;
-using QuantLib;
 using QlCcy = QuantLib.Currency;
 // ReSharper disable InconsistentNaming
 
@@ -20,6 +19,8 @@ namespace CfAnalytics.QuantLib.InternalUtils
                     return GBP;
                 case Currency.CHF:
                     return CHF;
+                case Currency.JPY:
+                    return JPY;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(ccy), ccy, "Unmapped Currency");
             }
@@ -30,9 +31,10 @@ namespace CfAnalytics.QuantLib.InternalUtils
             return EnumUtils.GetCurrency(ccy.code());
         }
 
-        internal static readonly QlCcy EUR = new EURCurrency();
-        internal static readonly QlCcy USD = new USDCurrency();
-        internal static readonly QlCcy GBP = new GBPCurrency();
-        internal static readonly QlCcy CHF = new CHFCurrency();
+        internal static readonly QlCcy EUR = new global::QuantLib.EURCurrency();
+        internal static readonly QlCcy USD = new global::QuantLib.USDCurrency();
+        internal static readonly QlCcy GBP = new global::QuantLib.GBPCurrency();
+        internal static readonly QlCcy CHF = new global::QuantLib.CHFCurrency();
+        internal static readonly QlCcy JPY = new global::QuantLib.JPYCurrency();
     }
 }

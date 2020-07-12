@@ -1,6 +1,5 @@
 ﻿using System;
 using CfAnalytics.QuantLib.InternalUtils;
-using CfAnalytics.Utilities;
 using QlEr = QuantLib.ExchangeRate;
 // ReSharper disable InconsistentNaming
 
