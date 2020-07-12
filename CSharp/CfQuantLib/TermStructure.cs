@@ -1,10 +1,13 @@
-﻿namespace CfAnalytics.QuantLib
+﻿using QlTs = QuantLib.TermStructure;
+
+namespace CfAnalytics.QuantLib
 {
-    public class TermStructure
+    public abstract class TermStructure
     {
+        public abstract override string ToString();
     }
 
-    public class TermStructure<TWrapped> : TermStructure
+    public abstract class TermStructure<TWrapped> : TermStructure where TWrapped : QlTs
     {
         internal TWrapped QlObj { get; }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using CfAnalytics.QuantLib.InternalUtils;
 using QlFwdXrate = QuantLib.ForwardExchangeRate;
 
 namespace CfAnalytics.QuantLib
@@ -18,6 +19,8 @@ namespace CfAnalytics.QuantLib
         }
 
         public ExchangeRate SpotExchangeRate => new ExchangeRate(QlObj.spotExchangeRate());
+        public Currency BaseCurrency => QlObj.source().ToCfCurrency();
+        public Currency QuoteCurrency => QlObj.target().ToCfCurrency();
         public double SpotRate => QlObj.spotRate();
         public double ForwardPoints => QlObj.forwardPoints();
         public double Forwardrate => QlObj.forwardRate();
@@ -54,6 +57,15 @@ namespace CfAnalytics.QuantLib
         public static bool operator !=(ForwardExchangeRate left, ForwardExchangeRate right)
         {
             return !left.Equals(right);
+        }
+
+        #endregion
+
+        #region Overrides of ValueType
+
+        public override string ToString()
+        {
+            return QlObj.ToString();
         }
 
         #endregion

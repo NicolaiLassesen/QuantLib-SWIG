@@ -1,38 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using QlFwdPntTsHandle = QuantLib.FxForwardPointTermStructureHandle;
+using QlDate = QuantLib.Date;
 using QlCalendar = QuantLib.Calendar;
 using QlJointCalendar = QuantLib.JointCalendar;
 using QlDayCounter = QuantLib.DayCounter;
 using QlFwdXRate = QuantLib.ForwardExchangeRate;
 using QlFwdXRateVector = QuantLib.ForwardExchangeRateVector;
+using QlFwdPntTs = QuantLib.FxForwardPointTermStructure;
+using QlFwdPntTsHandle = QuantLib.FxForwardPointTermStructureHandle;
 // ReSharper disable InconsistentNaming
 
 namespace CfAnalytics.QuantLib.TermStructures
 {
-    public class FxForwardPointTermStructure : TermStructure<QlFwdPntTsHandle>
+    public class FxForwardPointTermStructure : TermStructure<QlFwdPntTs>
     {
         public class Builder
         {
             private ExchangeRate _spotExchangeRate;
 
-            public Builder(DateTime referenceDate, Currency baseCurrency, Currency quoteCurrency)
+            public Builder(DateTime tradeDate, Currency baseCurrency, Currency quoteCurrency)
             {
-                ReferenceDate = referenceDate;
+                TradeDate = tradeDate;
                 BaseCurrency = baseCurrency;
                 QuoteCurrency = quoteCurrency;
+                ForwardPoints = new List<(Period tenor, double forwardPoints)>();
             }
 
-            public Builder(DateTime referenceDate, ExchangeRate spotExchangeRate)
+            public Builder(DateTime tradeDate, ExchangeRate spotExchangeRate)
+            : this(tradeDate, spotExchangeRate.BaseCurrency, spotExchangeRate.QuoteCurrency)
             {
-                ReferenceDate = referenceDate;
-                BaseCurrency = spotExchangeRate.BaseCurrency;
-                QuoteCurrency = spotExchangeRate.QuoteCurrency;
                 _spotExchangeRate = spotExchangeRate;
             }
 
-            public DateTime ReferenceDate { get; }
+            public DateTime TradeDate { get; }
+            public int SpotDays { get; set; }
 
             public Currency BaseCurrency { get; }
             public Currency QuoteCurrency { get; }
@@ -47,9 +49,9 @@ namespace CfAnalytics.QuantLib.TermStructures
                 set => _spotExchangeRate = new ExchangeRate(QuoteCurrency, BaseCurrency, value);
             }
 
-            public ICollection<(Period tenor, double forwardPoints)> ForwardPoints { get; set; }
+            public ICollection<(Period Tenor, double ForwardPoints)> ForwardPoints { get; set; }
 
-            internal QlFwdPntTsHandle Build()
+            internal QlFwdPntTs Build()
             {
                 if (_spotExchangeRate == null)
                     throw new ArgumentNullException(nameof(SpotExchangeRate));
@@ -58,13 +60,15 @@ namespace CfAnalytics.QuantLib.TermStructures
 
                 QlCalendar calendar = new QlJointCalendar(BaseCalendar.ToQlCalendar(), QuoteCalendar.ToQlCalendar());
                 QlDayCounter dayCounter = DayCounter.ToQlDayCounter();
+                QlDate spotDate = calendar.advance(TradeDate, SpotDays, global::QuantLib.TimeUnit.Days);
 
                 if (_spotExchangeRate.BaseCurrency != BaseCurrency)
                     _spotExchangeRate = _spotExchangeRate.Inverse();
 
-                var fwdExchRates = new QlFwdXRateVector(ForwardPoints.Select(fp => new QlFwdXRate(_spotExchangeRate.QlObj, fp.forwardPoints, fp.tenor.QlObj)));
-                var fwdPtCurve = new global::QuantLib.InterpolatedFxForwardPointTermStructureLinear(ReferenceDate, fwdExchRates, dayCounter, calendar);
-                return new QlFwdPntTsHandle(fwdPtCurve);
+                var qlFwdRates = ForwardPoints.OrderBy(fp => fp.Tenor)
+                                              .Select(fp => new QlFwdXRate(_spotExchangeRate.QlObj, fp.ForwardPoints, fp.Tenor.QlObj));
+                var fwdExchRates = new QlFwdXRateVector(qlFwdRates);
+                return new global::QuantLib.InterpolatedFxForwardPointTermStructureLinear(spotDate, fwdExchRates, dayCounter, calendar);
             }
         }
 
@@ -72,5 +76,19 @@ namespace CfAnalytics.QuantLib.TermStructures
             : base(builder.Build())
         {
         }
+
+        internal QlFwdPntTsHandle GetHandle()
+        {
+            return new QlFwdPntTsHandle(QlObj);
+        }
+
+        #region Overrides of TermStructure
+
+        public override string ToString()
+        {
+            return $"{nameof(FxForwardPointTermStructure)} {QlObj.referenceDate().ISO()}";
+        }
+
+        #endregion
     }
 }

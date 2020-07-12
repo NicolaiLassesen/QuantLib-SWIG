@@ -1,4 +1,5 @@
 ﻿using System;
+using CfAnalytics.QuantLib.InternalUtils;
 using CfAnalytics.Utilities;
 using QuantLib;
 using QlFxFwd = QuantLib.ForeignExchangeForward;
@@ -20,9 +21,9 @@ namespace CfAnalytics.QuantLib.Instruments
         }
 
         public DateTime DeliveryDate => QlObj.deliveryDate().AsDateTime();
-        public ExchangeRate ContractAllInRate=>new ExchangeRate(QlObj.contractAllInRate());
-        public Currency BaseCurrency => EnumUtils.GetCurrency(QlObj.baseCurrency().code());
-        public Currency QuoteCurrency => EnumUtils.GetCurrency(QlObj.termCurrency().code());
+        public ExchangeRate ContractAllInRate => new ExchangeRate(QlObj.contractAllInRate());
+        public Currency BaseCurrency => QlObj.baseCurrency().ToCfCurrency();
+        public Currency QuoteCurrency => QlObj.termCurrency().ToCfCurrency();
         public Type ForwardType => EnumUtils.GetEnumValue<Type>(QlObj.forwardType().ToString());
 
         //QlObj.foreignExchangeTerms().settlementDays();
@@ -43,5 +44,14 @@ namespace CfAnalytics.QuantLib.Instruments
         public Money PresentNetValueQuote() => new Money(QlObj.presentNetValueTerm());
 
         public double FairForwardPoints() => QlObj.fairForwardPoints();
+
+        #region Overrides of Object
+
+        public override string ToString()
+        {
+            return QlObj.ToString();
+        }
+
+        #endregion
     }
 }

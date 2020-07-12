@@ -4,7 +4,7 @@ using QlPeriod = QuantLib.Period;
 
 namespace CfAnalytics.QuantLib
 {
-    public readonly struct Period : IEquatable<Period>
+    public readonly struct Period : IEquatable<Period>, IComparable<Period>, IComparable
     {
         internal QlPeriod QlObj { get; }
 
@@ -18,6 +18,11 @@ namespace CfAnalytics.QuantLib
         {
         }
 
+        public Period(string periodString)
+            : this(new QlPeriod(periodString))
+        {
+        }
+
         public int Length => QlObj.length();
         public TimeUnit Units => QlObj.units().ToTimeUnit();
 
@@ -25,16 +30,12 @@ namespace CfAnalytics.QuantLib
 
         public bool Equals(Period other)
         {
-            if (other is null) return false;
-            if (ReferenceEquals(this, other)) return true;
             return Length == other.Length && Units == other.Units;
         }
 
         public override bool Equals(object obj)
         {
-            if (obj is null) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((Period)obj);
+            return obj is Period other && Equals(other);
         }
 
         public override int GetHashCode()
@@ -57,6 +58,91 @@ namespace CfAnalytics.QuantLib
 
         #endregion
 
+        #region Relational members
+
+        public int CompareTo(Period other)
+        {
+            // TODO: Logic copied from QL - expose actual QL logic via SWIG instead
+
+            // special cases
+            if (Length == 0)
+                return other.Length.CompareTo(0);
+            if (other.Length == 0)
+                return Length.CompareTo(0);
+
+            // exact comparisons
+            if (Units == other.Units)
+                return Length.CompareTo(other.Length);
+            if (Units == TimeUnit.Months && other.Units == TimeUnit.Years)
+                return Length.CompareTo(other.Length * 12);
+            if (Units == TimeUnit.Years && other.Units == TimeUnit.Months)
+                return (Length * 12).CompareTo(other.Length);
+            if (Units == TimeUnit.Days && other.Units == TimeUnit.Weeks)
+                return Length.CompareTo(other.Length * 7);
+            if (Units == TimeUnit.Weeks && other.Units == TimeUnit.Days)
+                return (Length * 7).CompareTo(other.Length);
+
+            // inexact comparisons (handled by converting to days and using limits)
+            var thisLim = DaysMinMax(this);
+            var otherLim = DaysMinMax(other);
+
+            if (thisLim.Max < otherLim.Min)
+                return -1;
+            if (thisLim.Min > otherLim.Max)
+                return 1;
+
+            throw new ArgumentException($"Undecidable comparison between Period objects {this} and {other}");
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj is null) return 1;
+            return obj is Period other ? CompareTo(other) : throw new ArgumentException($"Object must be of type {nameof(Period)}");
+        }
+
+        public static bool operator <(Period left, Period right)
+        {
+            return left.CompareTo(right) < 0;
+        }
+
+        public static bool operator >(Period left, Period right)
+        {
+            return left.CompareTo(right) > 0;
+        }
+
+        public static bool operator <=(Period left, Period right)
+        {
+            return left.CompareTo(right) <= 0;
+        }
+
+        public static bool operator >=(Period left, Period right)
+        {
+            return left.CompareTo(right) >= 0;
+        }
+
+        #endregion
+
         public override string ToString() => QlObj.__str__();
+
+        #region Private helpers
+
+        private static (int Min, int Max) DaysMinMax(Period p)
+        {
+            switch (p.Units)
+            {
+                case TimeUnit.Days:
+                    return (p.Length, p.Length);
+                case TimeUnit.Weeks:
+                    return (7 * p.Length, 7 * p.Length);
+                case TimeUnit.Months:
+                    return (28 * p.Length, 31 * p.Length);
+                case TimeUnit.Years:
+                    return (365 * p.Length, 366 * p.Length);
+                default:
+                    throw new ArgumentOutOfRangeException($"{nameof(TimeUnit)} cannot be converted to days interval ({p.Units})");
+            }
+        }
+
+        #endregion
     }
 }

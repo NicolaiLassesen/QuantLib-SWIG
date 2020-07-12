@@ -1,6 +1,5 @@
 ﻿using System;
 using CfAnalytics.QuantLib.InternalUtils;
-using CfAnalytics.Utilities;
 using QlMoney = QuantLib.Money;
 
 namespace CfAnalytics.QuantLib
@@ -15,12 +14,12 @@ namespace CfAnalytics.QuantLib
         }
 
         public Money(double value, Currency currency)
-            : this(new QlMoney(value, CcyHelper.Convert(currency)))
+            : this(new QlMoney(value, currency.ToQlCurrency()))
         {
         }
 
         public double Value => QlObj.value();
-        public Currency Currency => EnumUtils.GetCurrency(QlObj.currency().code());
+        public Currency Currency => QlObj.currency().ToCfCurrency();
 
         public override string ToString()
         {

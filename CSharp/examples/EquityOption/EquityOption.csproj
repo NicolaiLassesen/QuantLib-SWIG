@@ -5,16 +5,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
-
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="copy &quot;$(SolutionDir)cpp\bin\x86\$(Configuration)\NQuantLibc.dll&quot; &quot;$(TargetDir)&quot;" />
+    <Exec Command="echo F|xcopy /y &quot;$(SolutionDir)cpp\bin\x64\$(Configuration)\NQuantLibc64.dll&quot; &quot;$(TargetDir)NQuantLibc.dll&quot;" />
   </Target>
 
   <ItemGroup>

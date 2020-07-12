@@ -8,5 +8,8 @@
     <Company>Capital Four Management Fondsmæglerselskab A/S</Company>
   </PropertyGroup>
 
-</Project>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="echo F|xcopy /y &quot;$(TargetDir)NQuantLib.dll&quot; &quot;C:\dev\CfAnalytics\CfAnalytics.Calculation.Calculator\NQuantLib.dll&quot;" />
+  </Target>
 
+</Project>

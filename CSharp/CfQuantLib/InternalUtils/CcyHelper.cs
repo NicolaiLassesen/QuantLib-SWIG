@@ -1,13 +1,14 @@
 ﻿using System;
+using CfAnalytics.Utilities;
 using QuantLib;
-using Ccy = QuantLib.Currency;
+using QlCcy = QuantLib.Currency;
 // ReSharper disable InconsistentNaming
 
 namespace CfAnalytics.QuantLib.InternalUtils
 {
     internal static class CcyHelper
     {
-        internal static Ccy Convert(Currency ccy)
+        internal static QlCcy ToQlCurrency(this Currency ccy)
         {
             switch (ccy)
             {
@@ -24,9 +25,14 @@ namespace CfAnalytics.QuantLib.InternalUtils
             }
         }
 
-        internal static readonly Ccy EUR = new EURCurrency();
-        internal static readonly Ccy USD = new USDCurrency();
-        internal static readonly Ccy GBP = new GBPCurrency();
-        internal static readonly Ccy CHF = new CHFCurrency();
+        internal static Currency ToCfCurrency(this QlCcy ccy)
+        {
+            return EnumUtils.GetCurrency(ccy.code());
+        }
+
+        internal static readonly QlCcy EUR = new EURCurrency();
+        internal static readonly QlCcy USD = new USDCurrency();
+        internal static readonly QlCcy GBP = new GBPCurrency();
+        internal static readonly QlCcy CHF = new CHFCurrency();
     }
 }

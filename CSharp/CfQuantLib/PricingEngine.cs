@@ -1,10 +1,14 @@
-﻿namespace CfAnalytics.QuantLib
+﻿using QlEngine = QuantLib.PricingEngine;
+// ReSharper disable InconsistentNaming
+
+namespace CfAnalytics.QuantLib
 {
-    public class PricingEngine
+    public abstract class PricingEngine
     {
+        internal abstract QlEngine GetQlEngine();
     }
 
-    public class PricingEngine<TWrapped> : PricingEngine
+    public class PricingEngine<TWrapped> : PricingEngine where TWrapped : QlEngine
     {
         internal TWrapped QlObj { get; }
 
@@ -12,5 +16,11 @@
         {
             QlObj = qlObj;
         }
+
+        #region Overrides of PricingEngine
+
+        internal override QlEngine GetQlEngine() => QlObj;
+
+        #endregion
     }
 }

@@ -40,7 +40,7 @@ namespace CfAnalytics.QuantLib
         {
             set
             {
-                var ccy = CcyHelper.Convert(value);
+                var ccy = value.ToQlCurrency();
                 QlMoney.setBaseCurrency(ccy);
             }
         }
@@ -55,9 +55,9 @@ namespace CfAnalytics.QuantLib
             QlErm.instance().add(exchangeRate.QlObj, date);
         }
 
-        public static ExchangeRate LookUp(Currency baseCurrency, Currency quoteCurrency, DateTime date)
+        public static ExchangeRate Lookup(Currency baseCurrency, Currency quoteCurrency, DateTime date)
         {
-            return new ExchangeRate(QlErm.instance().lookup(CcyHelper.Convert(baseCurrency), CcyHelper.Convert(quoteCurrency), date));
+            return new ExchangeRate(QlErm.instance().lookup(baseCurrency.ToQlCurrency(), quoteCurrency.ToQlCurrency(), date));
         }
     }
 }

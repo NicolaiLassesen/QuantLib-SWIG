@@ -22,12 +22,12 @@ namespace CfAnalytics.QuantLib
         }
 
         public ExchangeRate(Currency baseCurrency, Currency quoteCurrency, double rate)
-            : this(new QlEr(CcyHelper.Convert(baseCurrency), CcyHelper.Convert(quoteCurrency), rate))
+            : this(new QlEr(baseCurrency.ToQlCurrency(), quoteCurrency.ToQlCurrency(), rate))
         {
         }
 
-        public Currency BaseCurrency => EnumUtils.GetCurrency(QlObj.source().code());
-        public Currency QuoteCurrency => EnumUtils.GetCurrency(QlObj.target().code());
+        public Currency BaseCurrency => QlObj.source().ToCfCurrency();
+        public Currency QuoteCurrency => QlObj.target().ToCfCurrency();
         public double Rate => QlObj.rate();
 
         public Type ExchangeRateType

@@ -11,6 +11,7 @@ using ExchangeRateManager = CfAnalytics.QuantLib.ExchangeRateManager;
 using Money = CfAnalytics.QuantLib.Money;
 using Settings = CfAnalytics.QuantLib.Settings;
 using TimeUnit = CfAnalytics.TimeUnit;
+// ReSharper disable InconsistentNaming
 
 namespace FxForwardValuation
 {
@@ -54,15 +55,13 @@ namespace FxForwardValuation
             var fxFwd = new ForeignExchangeForward(deliveryDate, baseNotionalAmount, contractAllInRate);
             Console.WriteLine("Valuation of FxFwd " + fxFwd);
 
-            ExchangeRate spotUsdEurRate = ExchangeRateManager.LookUp(Currency.USD, Currency.EUR, todaysDate);
+            ExchangeRate spotUsdEurRate = ExchangeRateManager.Lookup(Currency.USD, Currency.EUR, todaysDate);
 
-            var eurUsdFwdCurve = EurUsdFwdPointStructure(todaysDate);
             var usdEurFwdCurve = UsdEurFwdPointStructure(todaysDate);
             var eurDiscountCurve = DiscountingEurCurve(todaysDate);
             var usdDiscountCurve = DiscountingUsdCurve(todaysDate);
 
-            var engine = new ForwardPointsEngine(spotUsdEurRate, usdEurFwdCurve, usdDiscountCurve, eurDiscountCurve);
-            fxFwd.setPricingEngine(engine);
+            fxFwd.PricingEngine = new ForwardPointsEngine(spotUsdEurRate, usdEurFwdCurve, usdDiscountCurve, eurDiscountCurve);
 
             PrintResults(fxFwd);
 
@@ -76,81 +75,78 @@ namespace FxForwardValuation
         private static void ShortGbpEurExample(DateTime todaysDate)
         {
             var deliveryDate = new DateTime(2020, 3, 11);
-            var baseNotionalAmount = new Money(40300000, GBP_CCY);
-            var contractAllInRate = new ExchangeRate(GBP_CCY, EUR_CCY, 1.16992588519517);
+            var baseNotionalAmount = new Money(40300000, Currency.GBP);
+            var contractAllInRate = new ExchangeRate(Currency.GBP, Currency.EUR, 1.16992588519517);
 
             var fxFwd = new ForeignExchangeForward(deliveryDate, baseNotionalAmount, contractAllInRate);
             Console.WriteLine("Valuation of FxFwd " + fxFwd);
 
-            ExchangeRate spotBaseTermRate = ExchangeRateManager.instance().lookup(GBP_CCY, EUR_CCY, todaysDate);
+            ExchangeRate spotBaseTermRate = ExchangeRateManager.Lookup(Currency.GBP, Currency.EUR, todaysDate);
             var termBaseFwdCurve = EurGbpFwdPointStructure(todaysDate);
             var baseTermFwdCurve = GbpEurFwdPointStructure(todaysDate);
             var termDiscountCurve = DiscountingEurCurve(todaysDate);
             var baseDiscountCurve = DiscountingGbpCurve(todaysDate);
 
-            var engine = new ForwardPointsEngine(spotBaseTermRate, baseTermFwdCurve, baseDiscountCurve, termDiscountCurve);
-            fxFwd.setPricingEngine(engine);
+            fxFwd.PricingEngine= new ForwardPointsEngine(spotBaseTermRate, baseTermFwdCurve, baseDiscountCurve, termDiscountCurve);
 
             PrintResults(fxFwd);
 
             // Base Leg:  47,148,013.17 EUR
             // Term Leg: -46,843,587.57 EUR
             // ----------------------------
-            // NPV:         -304,425.60 EUR
+            // NPV:          304,425.60 EUR
             // ============================
         }
 
         private static void LongUsdEurExample(DateTime todaysDate)
         {
             var deliveryDate = new DateTime(2020, 5, 28);
-            var baseNotionalAmount = new Money(24750000, USD_CCY);
-            var contractAllInRate = new ExchangeRate(USD_CCY, EUR_CCY, 0.919214806712107);
+            var baseNotionalAmount = new Money(24750000, Currency.USD);
+            var contractAllInRate = new ExchangeRate(Currency.USD, Currency.EUR, 0.919214806712107);
 
             var fxFwd = new ForeignExchangeForward(deliveryDate, baseNotionalAmount, contractAllInRate);
             Console.WriteLine("Valuation of FxFwd " + fxFwd);
 
-            ExchangeRate spotUsdEurRate = ExchangeRateManager.instance().lookup(USD_CCY, EUR_CCY, todaysDate);
+            ExchangeRate spotUsdEurRate = ExchangeRateManager.Lookup(Currency.USD, Currency.EUR, todaysDate);
             var eurUsdFwdCurve = EurUsdFwdPointStructure(todaysDate);
             var usdEurFwdCurve = UsdEurFwdPointStructure(todaysDate);
             var eurDiscountCurve = DiscountingEurCurve(todaysDate);
             var usdDiscountCurve = DiscountingUsdCurve(todaysDate);
 
-            var engine = new ForwardPointsEngine(spotUsdEurRate, usdEurFwdCurve, usdDiscountCurve, eurDiscountCurve);
-            fxFwd.setPricingEngine(engine);
+            fxFwd.PricingEngine = new ForwardPointsEngine(spotUsdEurRate, usdEurFwdCurve, usdDiscountCurve, eurDiscountCurve);
 
             PrintResults(fxFwd);
 
             // Base Leg:  22,750,566.47 EUR
             // Term Leg: -22,412,996.84 EUR
             // ----------------------------
-            // NPV:         -337,569.62 EUR
+            // NPV:          337,569.62 EUR
             // ============================
         }
 
         private static void LongGbpEurExample(DateTime todaysDate)
         {
             var deliveryDate = new DateTime(2020, 5, 28);
-            var baseNotionalAmount = new Money(16925000, GBP_CCY);
-            var contractAllInRate = new ExchangeRate(GBP_CCY, EUR_CCY, 1.19394431443717);
+            var baseNotionalAmount = new Money(16925000, Currency.GBP);
+            var contractAllInRate = new ExchangeRate(Currency.GBP, Currency.EUR, 1.19394431443717);
 
             var fxFwd = new ForeignExchangeForward(deliveryDate, baseNotionalAmount, contractAllInRate);
             Console.WriteLine("Valuation of FxFwd " + fxFwd);
 
-            ExchangeRate spotBaseTermRate = ExchangeRateManager.instance().lookup(GBP_CCY, EUR_CCY, todaysDate);
+            ExchangeRate spotBaseTermRate = ExchangeRateManager.Lookup(Currency.GBP, Currency.EUR, todaysDate);
             var termBaseFwdCurve = EurGbpFwdPointStructure(todaysDate);
             var baseTermFwdCurve = GbpEurFwdPointStructure(todaysDate);
             var termDiscountCurve = DiscountingEurCurve(todaysDate);
             var baseDiscountCurve = DiscountingGbpCurve(todaysDate);
 
-            var engine = new ForwardPointsEngine(spotBaseTermRate, baseTermFwdCurve, baseDiscountCurve, termDiscountCurve);
-            fxFwd.setPricingEngine(engine);
+            fxFwd.PricingEngine = new ForwardPointsEngine(spotBaseTermRate, baseTermFwdCurve, baseDiscountCurve, termDiscountCurve);
 
             PrintResults(fxFwd);
 
             // Base Leg:  20,207,507.52 EUR
             // Term Leg: -19,621,824.42 EUR
             // ----------------------------
-            // NPV:         -585,683.10 EUR
+            // NPV:          585,683.10 EUR
             // ============================
         }
 
@@ -165,7 +161,7 @@ namespace FxForwardValuation
 
         private static FxForwardPointTermStructure UsdEurFwdPointStructure(DateTime todaysDate)
         {
-            ExchangeRate spotExchRate = ExchangeRateManager.LookUp(Currency.USD, Currency.EUR, todaysDate);
+            ExchangeRate spotExchRate = ExchangeRateManager.Lookup(Currency.USD, Currency.EUR, todaysDate);
             if (spotExchRate.BaseCurrency != Currency.USD)
                 spotExchRate = spotExchRate.Inverse();
             var builder = new FxForwardPointTermStructure.Builder(todaysDate, spotExchRate)
@@ -188,7 +184,7 @@ namespace FxForwardValuation
 
         private static FxForwardPointTermStructure EurUsdFwdPointStructure(DateTime todaysDate)
         {
-            ExchangeRate spotExchRate = ExchangeRateManager.LookUp(Currency.EUR, Currency.USD, todaysDate);
+            ExchangeRate spotExchRate = ExchangeRateManager.Lookup(Currency.EUR, Currency.USD, todaysDate);
             if (spotExchRate.BaseCurrency != Currency.EUR)
                 spotExchRate = spotExchRate.Inverse();
             var builder = new FxForwardPointTermStructure.Builder(todaysDate, spotExchRate)
@@ -198,9 +194,9 @@ namespace FxForwardValuation
                 DayCounter = DayCounter.Actual360,
                 ForwardPoints = new[]
                 {
-                    (new Period(1, TimeUnit.Weeks),  4.9   ),
-                    (new Period(2, TimeUnit.Weeks),  9.625 ),
-                    (new Period(3, TimeUnit.Weeks),  14.305),
+                    (new Period(1, TimeUnit.Weeks), 4.9),
+                    (new Period(2, TimeUnit.Weeks), 9.625),
+                    (new Period(3, TimeUnit.Weeks), 14.305),
                     (new Period(1, TimeUnit.Months), 21.155),
                     (new Period(2, TimeUnit.Months), 40.669),
                     (new Period(3, TimeUnit.Months), 57.975)
@@ -211,7 +207,7 @@ namespace FxForwardValuation
 
         private static FxForwardPointTermStructure GbpEurFwdPointStructure(DateTime todaysDate)
         {
-            ExchangeRate spotExchRate = ExchangeRateManager.LookUp(Currency.GBP, Currency.EUR, todaysDate);
+            ExchangeRate spotExchRate = ExchangeRateManager.Lookup(Currency.GBP, Currency.EUR, todaysDate);
             if (spotExchRate.BaseCurrency != Currency.GBP)
                 spotExchRate = spotExchRate.Inverse();
             var builder = new FxForwardPointTermStructure.Builder(todaysDate, spotExchRate)
@@ -221,7 +217,7 @@ namespace FxForwardValuation
                 DayCounter = DayCounter.Actual360,
                 ForwardPoints = new[]
                 {
-                    (new Period(1, TimeUnit.Weeks),  -2.8  ),
+                    (new Period(1, TimeUnit.Weeks), -2.8),
                     (new Period(1, TimeUnit.Months), -12.13),
                     (new Period(2, TimeUnit.Months), -24.16),
                     (new Period(3, TimeUnit.Months), -34.99)
@@ -232,7 +228,7 @@ namespace FxForwardValuation
 
         private static FxForwardPointTermStructure EurGbpFwdPointStructure(DateTime todaysDate)
         {
-            ExchangeRate spotExchRate = ExchangeRateManager.LookUp(Currency.EUR, Currency.GBP, todaysDate);
+            ExchangeRate spotExchRate = ExchangeRateManager.Lookup(Currency.EUR, Currency.GBP, todaysDate);
             if (spotExchRate.BaseCurrency != Currency.EUR)
                 spotExchRate = spotExchRate.Inverse();
             var builder = new FxForwardPointTermStructure.Builder(todaysDate, spotExchRate)
@@ -242,10 +238,10 @@ namespace FxForwardValuation
                 DayCounter = DayCounter.Actual360,
                 ForwardPoints = new[]
                 {
-                    (new Period(1, TimeUnit.Weeks),  2.06 ),
-                    (new Period(2, TimeUnit.Weeks),  4.01 ),
-                    (new Period(3, TimeUnit.Weeks),  6.19 ),
-                    (new Period(1, TimeUnit.Months), 8.98 ),
+                    (new Period(1, TimeUnit.Weeks), 2.06),
+                    (new Period(2, TimeUnit.Weeks), 4.01),
+                    (new Period(3, TimeUnit.Weeks), 6.19),
+                    (new Period(1, TimeUnit.Months), 8.98),
                     (new Period(2, TimeUnit.Months), 17.85),
                     (new Period(3, TimeUnit.Months), 25.97)
                 }
@@ -253,88 +249,70 @@ namespace FxForwardValuation
             return new FxForwardPointTermStructure(builder);
         }
 
-        private static RelinkableYieldTermStructureHandle DiscountingEurCurve(DateTime todaysDate)
+        private static YieldTermStructure DiscountingEurCurve(DateTime todaysDate)
         {
-            DayCounter termStructureDayCounter = new ActualActual(ActualActual.Convention.ISDA);
-
-            // deposits
-            int fixingDays = 0;
-            Calendar calendar = new TARGET();
-            var depositConv = BusinessDayConvention.ModifiedFollowing;
-            Date settlementDate = calendar.advance(todaysDate, fixingDays, TimeUnit.Days);
-            DayCounter depositDayCount = new Actual360();
-
-            var d1WRate = new QuoteHandle(new SimpleQuote(-0.00518));
-            var d1MRate = new QuoteHandle(new SimpleQuote(-0.00488));
-            var d3MRate = new QuoteHandle(new SimpleQuote(-0.00424));
-            var d6MRate = new QuoteHandle(new SimpleQuote(-0.00386));
-            var d1YRate = new QuoteHandle(new SimpleQuote(-0.00311));
-
-            var d1W = new DepositRateHelper(d1WRate, new Period(1, TimeUnit.Weeks), Convert.ToUInt32(fixingDays), calendar, depositConv, true, depositDayCount);
-            var d1M = new DepositRateHelper(d1MRate, new Period(1, TimeUnit.Months), Convert.ToUInt32(fixingDays), calendar, depositConv, true, depositDayCount);
-            var d3M = new DepositRateHelper(d3MRate, new Period(3, TimeUnit.Months), Convert.ToUInt32(fixingDays), calendar, depositConv, true, depositDayCount);
-            var d6M = new DepositRateHelper(d6MRate, new Period(6, TimeUnit.Months), Convert.ToUInt32(fixingDays), calendar, depositConv, true, depositDayCount);
-            var d1Y = new DepositRateHelper(d1YRate, new Period(1, TimeUnit.Years), Convert.ToUInt32(fixingDays), calendar, depositConv, true, depositDayCount);
-            var depoSwapInstruments = new RateHelperVector {d1W, d1M, d3M, d6M, d1Y};
-
-            var depoTermStructure = new PiecewiseLogLinearDiscount(settlementDate, depoSwapInstruments, termStructureDayCounter);
-            return new RelinkableYieldTermStructureHandle(depoTermStructure);
+            var builder = new YieldTermStructure.Builder(todaysDate)
+            {
+                SpotDays = 0,
+                Currency = Currency.EUR,
+                Calendar = Calendar.TARGET,
+                DayCounter = DayCounter.ActualActualISDA,
+                DepositConvention = BusinessDayConvention.ModifiedFollowing,
+                DepositDayCounter = DayCounter.Actual360,
+                DepositRates = new[]
+                {
+                    (new Period(1, TimeUnit.Weeks), -0.00518),
+                    (new Period(1, TimeUnit.Months), -0.00488),
+                    (new Period(3, TimeUnit.Months), -0.00424),
+                    (new Period(6, TimeUnit.Months), -0.00386),
+                    (new Period(1, TimeUnit.Years), -0.00311)
+                }
+            };
+            return new YieldTermStructure(builder);
         }
 
-        private static RelinkableYieldTermStructureHandle DiscountingUsdCurve(DateTime todaysDate)
+        private static YieldTermStructure DiscountingUsdCurve(DateTime todaysDate)
         {
-            DayCounter termStructureDayCounter = new ActualActual(ActualActual.Convention.ISDA);
-
-            // deposits
-            int fixingDays = 0;
-            Calendar calendar = new UnitedStates(UnitedStates.Market.FederalReserve);
-            var depositConv = BusinessDayConvention.ModifiedFollowing;
-            Date settlementDate = calendar.advance(todaysDate, fixingDays, TimeUnit.Days);
-            DayCounter depositDayCount = new Actual360();
-
-            var d1WRate = new QuoteHandle(new SimpleQuote(0.01568));
-            var d1MRate = new QuoteHandle(new SimpleQuote(0.0151525));
-            var d3MRate = new QuoteHandle(new SimpleQuote(0.0146275));
-            var d6MRate = new QuoteHandle(new SimpleQuote(0.0139725));
-            var d1YRate = new QuoteHandle(new SimpleQuote(0.013815));
-
-            var d1W = new DepositRateHelper(d1WRate, new Period(1, TimeUnit.Weeks), Convert.ToUInt32(fixingDays), calendar, depositConv, true, depositDayCount);
-            var d1M = new DepositRateHelper(d1MRate, new Period(1, TimeUnit.Months), Convert.ToUInt32(fixingDays), calendar, depositConv, true, depositDayCount);
-            var d3M = new DepositRateHelper(d3MRate, new Period(3, TimeUnit.Months), Convert.ToUInt32(fixingDays), calendar, depositConv, true, depositDayCount);
-            var d6M = new DepositRateHelper(d6MRate, new Period(6, TimeUnit.Months), Convert.ToUInt32(fixingDays), calendar, depositConv, true, depositDayCount);
-            var d1Y = new DepositRateHelper(d1YRate, new Period(1, TimeUnit.Years), Convert.ToUInt32(fixingDays), calendar, depositConv, true, depositDayCount);
-            var depoSwapInstruments = new RateHelperVector {d1W, d1M, d3M, d6M, d1Y};
-
-            var depoTermStructure = new PiecewiseLogLinearDiscount(settlementDate, depoSwapInstruments, termStructureDayCounter);
-            return new RelinkableYieldTermStructureHandle(depoTermStructure);
+            var builder = new YieldTermStructure.Builder(todaysDate)
+            {
+                SpotDays = 0,
+                Currency = Currency.USD,
+                Calendar = Calendar.UnitedStatesFederalReserve,
+                DayCounter = DayCounter.ActualActualISDA,
+                DepositConvention = BusinessDayConvention.ModifiedFollowing,
+                DepositDayCounter = DayCounter.Actual360,
+                DepositRates = new[]
+                {
+                    (new Period(1, TimeUnit.Weeks), 0.01568  ),
+                    (new Period(1, TimeUnit.Months),0.0151525),
+                    (new Period(3, TimeUnit.Months),0.0146275),
+                    (new Period(6, TimeUnit.Months),0.0139725),
+                    (new Period(1, TimeUnit.Years), 0.013815 )
+                }
+            };
+            return new YieldTermStructure(builder);
         }
 
-        private static RelinkableYieldTermStructureHandle DiscountingGbpCurve(DateTime todaysDate)
+        private static YieldTermStructure DiscountingGbpCurve(DateTime todaysDate)
         {
-            DayCounter termStructureDayCounter = new ActualActual(ActualActual.Convention.ISDA);
-
-            // deposits
-            int fixingDays = 0;
-            Calendar calendar = new UnitedKingdom(UnitedKingdom.Market.Settlement);
-            var depositConv = BusinessDayConvention.ModifiedFollowing;
-            Date settlementDate = calendar.advance(todaysDate, fixingDays, TimeUnit.Days);
-            DayCounter depositDayCount = new Actual365Fixed(Actual365Fixed.Convention.Standard);
-
-            var d1WRate = new QuoteHandle(new SimpleQuote(0.00681));
-            var d1MRate = new QuoteHandle(new SimpleQuote(0.0067675));
-            var d3MRate = new QuoteHandle(new SimpleQuote(0.0067275));
-            var d6MRate = new QuoteHandle(new SimpleQuote(0.0068675));
-            var d1YRate = new QuoteHandle(new SimpleQuote(0.0075038));
-
-            var d1W = new DepositRateHelper(d1WRate, new Period(1, TimeUnit.Weeks), Convert.ToUInt32(fixingDays), calendar, depositConv, true, depositDayCount);
-            var d1M = new DepositRateHelper(d1MRate, new Period(1, TimeUnit.Months), Convert.ToUInt32(fixingDays), calendar, depositConv, true, depositDayCount);
-            var d3M = new DepositRateHelper(d3MRate, new Period(3, TimeUnit.Months), Convert.ToUInt32(fixingDays), calendar, depositConv, true, depositDayCount);
-            var d6M = new DepositRateHelper(d6MRate, new Period(6, TimeUnit.Months), Convert.ToUInt32(fixingDays), calendar, depositConv, true, depositDayCount);
-            var d1Y = new DepositRateHelper(d1YRate, new Period(1, TimeUnit.Years), Convert.ToUInt32(fixingDays), calendar, depositConv, true, depositDayCount);
-            var depoSwapInstruments = new RateHelperVector {d1W, d1M, d3M, d6M, d1Y};
-
-            var depoTermStructure = new PiecewiseLogLinearDiscount(settlementDate, depoSwapInstruments, termStructureDayCounter);
-            return new RelinkableYieldTermStructureHandle(depoTermStructure);
+            var builder = new YieldTermStructure.Builder(todaysDate)
+            {
+                SpotDays = 0,
+                Currency = Currency.GBP,
+                Calendar = Calendar.UnitedKingdomSettlement,
+                DayCounter = DayCounter.ActualActualISDA,
+                DepositConvention = BusinessDayConvention.ModifiedFollowing,
+                DepositDayCounter = DayCounter.Actual365FixedStandard,
+                DepositRates = new[]
+                {
+                    (new Period(1, TimeUnit.Weeks), 0.00681  ),
+                    (new Period(1, TimeUnit.Months),0.0067675),
+                    (new Period(3, TimeUnit.Months),0.0067275),
+                    (new Period(6, TimeUnit.Months),0.0068675),
+                    (new Period(1, TimeUnit.Years), 0.0075038)
+                }
+            };
+            return new YieldTermStructure(builder);
         }
     }
 }
