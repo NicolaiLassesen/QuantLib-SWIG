@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using CfAnalytics.QuantLib.InternalUtils;
 using QlYts = QuantLib.YieldTermStructure;
 using QlQuote=QuantLib.SimpleQuote;
@@ -12,9 +13,10 @@ namespace CfAnalytics.QuantLib.TermStructures.YieldTermStructures
     public class SwapCurveBootstrapBuilder : YieldTermStructure.BuilderBase
     {
         public SwapCurveBootstrapBuilder(DateTime tradeDate)
-            : base(tradeDate)
+            : base(tradeDate, true)
         {
             DepositRates = new List<(Period tenor, double depositRate)>();
+            SwapRates = new List<(Period tenor, double swapRate)>();
         }
 
         public DayCounter DepositBasis { get; set; }
@@ -25,7 +27,7 @@ namespace CfAnalytics.QuantLib.TermStructures.YieldTermStructures
         public BusinessDayConvention SwapFixedRollConvention { get; set; }
         public DayCounter SwapFixedBasis { get; set; }
         public string SwapFloatIndex { get; set; }
-        public ICollection<(Period tenor,double swapRate)> SwapRates { get; set; }
+        public ICollection<(Period tenor, double swapRate)> SwapRates { get; set; }
 
         internal override QlYts Build()
         {
@@ -45,15 +47,18 @@ namespace CfAnalytics.QuantLib.TermStructures.YieldTermStructures
             }
 
             // Swaps
-            var swapFixedFreq = SwapFixedFrequency.ToQlFrequency();
-            var swapFixedRoll = SwapFixedRollConvention.ToQlConvention();
-            var swapFixedBasis = SwapFixedBasis.ToQlDayCounter();
-            var floatIdx = IborIndexHelper.GetIborIndex(SwapFloatIndex);
-            foreach (var rate in SwapRates)
+            if (SwapRates.Any())
             {
-                var quote = new QlQuoteHandle(new QlQuote(rate.swapRate));
-                var swapHelper = new QlSwapHelper(quote, rate.tenor.QlObj, calendar, swapFixedFreq, swapFixedRoll, swapFixedBasis, floatIdx);
-                rateHelpers.Add(swapHelper);
+                var swapFixedFreq = SwapFixedFrequency.ToQlFrequency();
+                var swapFixedRoll = SwapFixedRollConvention.ToQlConvention();
+                var swapFixedBasis = SwapFixedBasis.ToQlDayCounter();
+                var floatIdx = IborIndexHelper.GetIborIndex(SwapFloatIndex);
+                foreach (var rate in SwapRates)
+                {
+                    var quote = new QlQuoteHandle(new QlQuote(rate.swapRate));
+                    var swapHelper = new QlSwapHelper(quote, rate.tenor.QlObj, calendar, swapFixedFreq, swapFixedRoll, swapFixedBasis, floatIdx);
+                    rateHelpers.Add(swapHelper);
+                }
             }
 
             return new global::QuantLib.PiecewiseLogLinearDiscount(spotDate, rateHelpers, termStructureDayCounter);

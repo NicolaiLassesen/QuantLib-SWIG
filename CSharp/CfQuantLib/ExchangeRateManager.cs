@@ -57,7 +57,8 @@ namespace CfAnalytics.QuantLib
 
         public static ExchangeRate Lookup(Currency baseCurrency, Currency quoteCurrency, DateTime date)
         {
-            return new ExchangeRate(QlErm.instance().lookup(baseCurrency.ToQlCurrency(), quoteCurrency.ToQlCurrency(), date));
+            var xrate = new ExchangeRate(QlErm.instance().lookup(baseCurrency.ToQlCurrency(), quoteCurrency.ToQlCurrency(), date));
+            return xrate.BaseCurrency == baseCurrency ? xrate : xrate.Inverse();
         }
     }
 }

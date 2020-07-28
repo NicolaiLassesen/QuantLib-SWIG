@@ -50,7 +50,7 @@ namespace FxForwardValuation
         private static void ShortUsdEurExample(DateTime todaysDate)
         {
             var deliveryDate = new DateTime(2020, 3, 4);
-            var baseNotionalAmount = new Money(12925000, Currency.USD);
+            var baseNotionalAmount = new Money(12925000m, Currency.USD);
             var contractAllInRate = new ExchangeRate(Currency.USD, Currency.EUR, 0.897487215294618);
 
             var fxFwd = new ForeignExchangeForward(deliveryDate, baseNotionalAmount, contractAllInRate);
@@ -76,7 +76,7 @@ namespace FxForwardValuation
         private static void ShortGbpEurExample(DateTime todaysDate)
         {
             var deliveryDate = new DateTime(2020, 3, 11);
-            var baseNotionalAmount = new Money(40300000, Currency.GBP);
+            var baseNotionalAmount = new Money(40300000m, Currency.GBP);
             var contractAllInRate = new ExchangeRate(Currency.GBP, Currency.EUR, 1.16992588519517);
 
             var fxFwd = new ForeignExchangeForward(deliveryDate, baseNotionalAmount, contractAllInRate);
@@ -88,7 +88,7 @@ namespace FxForwardValuation
             var termDiscountCurve = DiscountingEurCurve(todaysDate);
             var baseDiscountCurve = DiscountingGbpCurve(todaysDate);
 
-            fxFwd.PricingEngine= new ForwardPointsEngine(spotBaseTermRate, baseTermFwdCurve, baseDiscountCurve, termDiscountCurve);
+            fxFwd.PricingEngine = new ForwardPointsEngine(spotBaseTermRate, baseTermFwdCurve, baseDiscountCurve, termDiscountCurve);
 
             PrintResults(fxFwd);
 
@@ -102,7 +102,7 @@ namespace FxForwardValuation
         private static void LongUsdEurExample(DateTime todaysDate)
         {
             var deliveryDate = new DateTime(2020, 5, 28);
-            var baseNotionalAmount = new Money(24750000, Currency.USD);
+            var baseNotionalAmount = new Money(24750000m, Currency.USD);
             var contractAllInRate = new ExchangeRate(Currency.USD, Currency.EUR, 0.919214806712107);
 
             var fxFwd = new ForeignExchangeForward(deliveryDate, baseNotionalAmount, contractAllInRate);
@@ -128,7 +128,7 @@ namespace FxForwardValuation
         private static void LongGbpEurExample(DateTime todaysDate)
         {
             var deliveryDate = new DateTime(2020, 5, 28);
-            var baseNotionalAmount = new Money(16925000, Currency.GBP);
+            var baseNotionalAmount = new Money(16925000m, Currency.GBP);
             var contractAllInRate = new ExchangeRate(Currency.GBP, Currency.EUR, 1.19394431443717);
 
             var fxFwd = new ForeignExchangeForward(deliveryDate, baseNotionalAmount, contractAllInRate);

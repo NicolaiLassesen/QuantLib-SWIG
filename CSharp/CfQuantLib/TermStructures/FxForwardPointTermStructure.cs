@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CfAnalytics.QuantLib.InternalUtils;
 using QlDate = QuantLib.Date;
 using QlCalendar = QuantLib.Calendar;
 using QlJointCalendar = QuantLib.JointCalendar;
@@ -81,6 +82,9 @@ namespace CfAnalytics.QuantLib.TermStructures
         {
             return new QlFwdPntTsHandle(QlObj);
         }
+
+        public Currency BaseCurrency => QlObj.source().ToCfCurrency();
+        public Currency QuoteCurrency => QlObj.target().ToCfCurrency();
 
         #region Overrides of TermStructure
 

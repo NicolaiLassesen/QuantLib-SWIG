@@ -10,9 +10,10 @@ namespace CfAnalytics.QuantLib.TermStructures
     {
         public abstract class BuilderBase
         {
-            protected BuilderBase(DateTime tradeDate)
+            protected BuilderBase(DateTime tradeDate, bool isBootstrapped)
             {
                 TradeDate = tradeDate;
+                IsBootstrapped = isBootstrapped;
             }
 
             public DateTime TradeDate { get; }
@@ -21,6 +22,8 @@ namespace CfAnalytics.QuantLib.TermStructures
             public Currency Currency { get; set; }
             public Calendar Calendar { get; set; }
             public DayCounter DayCountBasis { get; set; }
+
+            public bool IsBootstrapped { get; }
 
             internal abstract QlYts Build();
         }
@@ -38,6 +41,21 @@ namespace CfAnalytics.QuantLib.TermStructures
         internal QlYtsRelinkHandle GetRelinkableHandle()
         {
             return new QlYtsRelinkHandle(QlObj);
+        }
+
+        public double Discount(DateTime date, bool extrapolate)
+        {
+            return QlObj.discount(date, extrapolate);
+        }
+
+        public double Discount(double time, bool extrapolate)
+        {
+            return QlObj.discount(time, extrapolate);
+        }
+
+        public InterestRate ZeroRate(double time)
+        {
+            return new InterestRate(QlObj.zeroRate(time, global::QuantLib.Compounding.Continuous));
         }
 
         #region Overrides of TermStructure

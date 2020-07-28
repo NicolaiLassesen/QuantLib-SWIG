@@ -13,6 +13,11 @@ namespace CfAnalytics.QuantLib
             QlObj = qlObj;
         }
 
+        public Money(decimal value, Currency currency)
+            : this(Convert.ToDouble(value), currency)
+        {
+        }
+
         public Money(double value, Currency currency)
             : this(new QlMoney(value, currency.ToQlCurrency()))
         {

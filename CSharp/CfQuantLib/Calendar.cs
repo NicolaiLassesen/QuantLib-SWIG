@@ -1,4 +1,5 @@
 ﻿using System;
+
 // ReSharper disable InconsistentNaming
 
 namespace CfAnalytics.QuantLib
@@ -16,7 +17,10 @@ namespace CfAnalytics.QuantLib
         UnitedKingdom,
         UnitedKingdomExchange,
         UnitedKingdomMetals,
-        UnitedKingdomSettlement
+        UnitedKingdomSettlement,
+        Sweden,
+        Switzerland,
+        Denmark
     }
 
     internal static class CalendarExt
@@ -49,6 +53,12 @@ namespace CfAnalytics.QuantLib
                     return new global::QuantLib.UnitedKingdom(global::QuantLib.UnitedKingdom.Market.Metals);
                 case Calendar.UnitedKingdomSettlement:
                     return new global::QuantLib.UnitedKingdom(global::QuantLib.UnitedKingdom.Market.Settlement);
+                case Calendar.Sweden:
+                    return new global::QuantLib.Sweden();
+                case Calendar.Switzerland:
+                    return new global::QuantLib.Switzerland();
+                case Calendar.Denmark:
+                    return new global::QuantLib.Denmark();
                 default:
                     throw new ArgumentOutOfRangeException(nameof(calendar), calendar, "Unmapped calendar");
             }

@@ -20,6 +20,11 @@ namespace CfAnalytics.QuantLib
             QlObj = qlObj;
         }
 
+        public ExchangeRate(Currency baseCurrency, Currency quoteCurrency, decimal rate)
+            : this(baseCurrency, quoteCurrency, Convert.ToDouble(rate))
+        {
+        }
+
         public ExchangeRate(Currency baseCurrency, Currency quoteCurrency, double rate)
             : this(new QlEr(baseCurrency.ToQlCurrency(), quoteCurrency.ToQlCurrency(), rate))
         {

@@ -1,6 +1,7 @@
 ﻿using System;
 using QlPeriod = QuantLib.Period;
 using QlTime = QuantLib.TimeUnit;
+using QlBdc = QuantLib.BusinessDayConvention;
 using QlIborIdx = QuantLib.IborIndex;
 using QlEuribor = QuantLib.Euribor;
 using QlUsdLibor = QuantLib.USDLibor;
@@ -60,6 +61,25 @@ namespace CfAnalytics.QuantLib.InternalUtils
                 case "JPY-LIBOR-6M": return JpyLibor6M;
                 case "JPY-LIBOR-9M": return JpyLibor9M;
                 case "JPY-LIBOR-12M": return JpyLibor12M;
+
+                case "SEK-STIBOR-1M": return SekStibor1M;
+                case "SEK-STIBOR-2M": return SekStibor2M;
+                case "SEK-STIBOR-3M": return SekStibor3M;
+                case "SEK-STIBOR-4M": return SekStibor4M;
+                case "SEK-STIBOR-5M": return SekStibor5M;
+                case "SEK-STIBOR-6M": return SekStibor6M;
+                case "SEK-STIBOR-9M": return SekStibor9M;
+                case "SEK-STIBOR-12M": return SekStibor12M;
+
+                case "DKK-CIBOR-1M": return DkkCibor1M;
+                case "DKK-CIBOR-2M": return DkkCibor2M;
+                case "DKK-CIBOR-3M": return DkkCibor3M;
+                case "DKK-CIBOR-4M": return DkkCibor4M;
+                case "DKK-CIBOR-5M": return DkkCibor5M;
+                case "DKK-CIBOR-6M": return DkkCibor6M;
+                case "DKK-CIBOR-9M": return DkkCibor9M;
+                case "DKK-CIBOR-12M": return DkkCibor12M;
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(iborIndex), iborIndex, "Unmapped Ibor Index");
             }
@@ -109,5 +129,49 @@ namespace CfAnalytics.QuantLib.InternalUtils
         public static QlJpyLibor JpyLibor6M = new QlJpyLibor(new QlPeriod(6, QlTime.Months));
         public static QlJpyLibor JpyLibor9M = new QlJpyLibor(new QlPeriod(9, QlTime.Months));
         public static QlJpyLibor JpyLibor12M = new QlJpyLibor(new QlPeriod(12, QlTime.Months));
+
+        public static SekStibor SekStibor1M = new SekStibor(new QlPeriod(1, QlTime.Months));
+        public static SekStibor SekStibor2M = new SekStibor(new QlPeriod(2, QlTime.Months));
+        public static SekStibor SekStibor3M = new SekStibor(new QlPeriod(3, QlTime.Months));
+        public static SekStibor SekStibor4M = new SekStibor(new QlPeriod(4, QlTime.Months));
+        public static SekStibor SekStibor5M = new SekStibor(new QlPeriod(5, QlTime.Months));
+        public static SekStibor SekStibor6M = new SekStibor(new QlPeriod(6, QlTime.Months));
+        public static SekStibor SekStibor9M = new SekStibor(new QlPeriod(9, QlTime.Months));
+        public static SekStibor SekStibor12M = new SekStibor(new QlPeriod(12, QlTime.Months));
+
+        public static DkkCibor DkkCibor1M = new DkkCibor(new QlPeriod(1, QlTime.Months));
+        public static DkkCibor DkkCibor2M = new DkkCibor(new QlPeriod(2, QlTime.Months));
+        public static DkkCibor DkkCibor3M = new DkkCibor(new QlPeriod(3, QlTime.Months));
+        public static DkkCibor DkkCibor4M = new DkkCibor(new QlPeriod(4, QlTime.Months));
+        public static DkkCibor DkkCibor5M = new DkkCibor(new QlPeriod(5, QlTime.Months));
+        public static DkkCibor DkkCibor6M = new DkkCibor(new QlPeriod(6, QlTime.Months));
+        public static DkkCibor DkkCibor9M = new DkkCibor(new QlPeriod(9, QlTime.Months));
+        public static DkkCibor DkkCibor12M = new DkkCibor(new QlPeriod(12, QlTime.Months));
+    }
+
+    public class SekStibor : QlIborIdx
+    {
+        public SekStibor(QlPeriod tenor)
+            : base("Stibor", tenor, 2, new global::QuantLib.SEKCurrency(), new global::QuantLib.Sweden(), QlBdc.ModifiedFollowing, false, new global::QuantLib.Actual360())
+        {
+        }
+
+        public SekStibor(QlPeriod tenor, global::QuantLib.YieldTermStructureHandle h)
+            : base("Stibor", tenor, 2, new global::QuantLib.SEKCurrency(), new global::QuantLib.Sweden(), QlBdc.ModifiedFollowing, false, new global::QuantLib.Actual360(), h)
+        {
+        }
+    }
+
+    public class DkkCibor : QlIborIdx
+    {
+        public DkkCibor(QlPeriod tenor)
+            : base("Cibor", tenor, 2, new global::QuantLib.DKKCurrency(), new global::QuantLib.Denmark(), QlBdc.ModifiedFollowing, false, new global::QuantLib.Actual360())
+        {
+        }
+
+        public DkkCibor(QlPeriod tenor, global::QuantLib.YieldTermStructureHandle h)
+            : base("Cibor", tenor, 2, new global::QuantLib.DKKCurrency(), new global::QuantLib.Denmark(), QlBdc.ModifiedFollowing, false, new global::QuantLib.Actual360(), h)
+        {
+        }
     }
 }

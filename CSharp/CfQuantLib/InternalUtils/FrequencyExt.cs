@@ -25,7 +25,7 @@ namespace CfAnalytics.QuantLib.InternalUtils
                 case CfFreq.Anytime: return QlFreq.Daily;
                 case CfFreq.Every5Years:
                 case CfFreq.Every2Years:
-                default: throw new ArgumentOutOfRangeException(nameof(frequency), frequency, null);
+                default: throw new ArgumentOutOfRangeException(nameof(frequency), frequency, "Unmapped frequency when mapping to QL");
             }
         }
 
@@ -46,7 +46,7 @@ namespace CfAnalytics.QuantLib.InternalUtils
                 case QlFreq.Weekly: return CfFreq.Weekly;
                 case QlFreq.Daily: return CfFreq.Daily;
                 case QlFreq.OtherFrequency:
-                default: throw new ArgumentOutOfRangeException(nameof(frequency), frequency, null);
+                default: throw new ArgumentOutOfRangeException(nameof(frequency), frequency, "Unmapped frequency when mapping from QL");
             }
         }
     }
