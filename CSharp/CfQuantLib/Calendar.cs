@@ -1,12 +1,31 @@
 ﻿using System;
+using CfAnalytics.QuantLib.InternalUtils;
+using QlCalendar=QuantLib.Calendar;
 
 // ReSharper disable InconsistentNaming
 
 namespace CfAnalytics.QuantLib
 {
-    public enum Calendar
+    public class Calendar
     {
+        internal QlCalendar QlObj { get; }
+
+        public Calendar(CalendarName calendar)
+        {
+            QlObj = calendar.ToQlCalendar();
+        }
+
+        public DateTime Advance(DateTime date, Period period)
+        {
+            return QlObj.advance(date, period.QlObj).AsDateTime();
+        }
+    }
+
+    public enum CalendarName
+    {
+        Unknown,
         TARGET,
+        WeekendsOnly,
         UnitedStates,
         UnitedStatesFederalReserve,
         UnitedStatesSettlement,
@@ -18,47 +37,61 @@ namespace CfAnalytics.QuantLib
         UnitedKingdomExchange,
         UnitedKingdomMetals,
         UnitedKingdomSettlement,
+        Canada,
+        CanadaSettlement,
+        CanadaTSX,
         Sweden,
         Switzerland,
-        Denmark
+        Denmark,
+        Norway
     }
 
     internal static class CalendarExt
     {
-        internal static global::QuantLib.Calendar ToQlCalendar(this Calendar calendar)
+        internal static global::QuantLib.Calendar ToQlCalendar(this CalendarName calendar)
         {
             switch (calendar)
             {
-                case Calendar.TARGET:
+                case CalendarName.TARGET:
                     return new global::QuantLib.TARGET();
-                case Calendar.UnitedStates:
+                case CalendarName.WeekendsOnly:
+                    return new global::QuantLib.WeekendsOnly();
+                case CalendarName.UnitedStates:
                     return new global::QuantLib.UnitedStates();
-                case Calendar.UnitedStatesFederalReserve:
+                case CalendarName.UnitedStatesFederalReserve:
                     return new global::QuantLib.UnitedStates(global::QuantLib.UnitedStates.Market.FederalReserve);
-                case Calendar.UnitedStatesSettlement:
+                case CalendarName.UnitedStatesSettlement:
                     return new global::QuantLib.UnitedStates(global::QuantLib.UnitedStates.Market.Settlement);
-                case Calendar.UnitedStatesNYSE:
+                case CalendarName.UnitedStatesNYSE:
                     return new global::QuantLib.UnitedStates(global::QuantLib.UnitedStates.Market.NYSE);
-                case Calendar.UnitedStatesGovernmentBond:
+                case CalendarName.UnitedStatesGovernmentBond:
                     return new global::QuantLib.UnitedStates(global::QuantLib.UnitedStates.Market.GovernmentBond);
-                case Calendar.UnitedStatesNERC:
+                case CalendarName.UnitedStatesNERC:
                     return new global::QuantLib.UnitedStates(global::QuantLib.UnitedStates.Market.NERC);
-                case Calendar.UnitedStatesLiborImpact:
+                case CalendarName.UnitedStatesLiborImpact:
                     return new global::QuantLib.UnitedStates(global::QuantLib.UnitedStates.Market.LiborImpact);
-                case Calendar.UnitedKingdom:
+                case CalendarName.UnitedKingdom:
                     return new global::QuantLib.UnitedKingdom();
-                case Calendar.UnitedKingdomExchange:
+                case CalendarName.UnitedKingdomExchange:
                     return new global::QuantLib.UnitedKingdom(global::QuantLib.UnitedKingdom.Market.Exchange);
-                case Calendar.UnitedKingdomMetals:
+                case CalendarName.UnitedKingdomMetals:
                     return new global::QuantLib.UnitedKingdom(global::QuantLib.UnitedKingdom.Market.Metals);
-                case Calendar.UnitedKingdomSettlement:
+                case CalendarName.UnitedKingdomSettlement:
                     return new global::QuantLib.UnitedKingdom(global::QuantLib.UnitedKingdom.Market.Settlement);
-                case Calendar.Sweden:
+                case CalendarName.Canada:
+                    return new global::QuantLib.Canada();
+                case CalendarName.CanadaSettlement:
+                    return new global::QuantLib.Canada(global::QuantLib.Canada.Market.Settlement);
+                case CalendarName.CanadaTSX:
+                    return new global::QuantLib.Canada(global::QuantLib.Canada.Market.TSX);
+                case CalendarName.Sweden:
                     return new global::QuantLib.Sweden();
-                case Calendar.Switzerland:
+                case CalendarName.Switzerland:
                     return new global::QuantLib.Switzerland();
-                case Calendar.Denmark:
+                case CalendarName.Denmark:
                     return new global::QuantLib.Denmark();
+                case CalendarName.Norway:
+                    return new global::QuantLib.Norway();
                 default:
                     throw new ArgumentOutOfRangeException(nameof(calendar), calendar, "Unmapped calendar");
             }

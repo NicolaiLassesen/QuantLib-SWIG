@@ -4,9 +4,9 @@ using CfFreq = CfAnalytics.Frequency;
 
 namespace CfAnalytics.QuantLib.InternalUtils
 {
-    public static class FrequencyExt
+    internal static class FrequencyExt
     {
-        public static QlFreq ToQlFrequency(this CfFreq frequency)
+        internal static QlFreq ToQlFrequency(this CfFreq frequency)
         {
             switch (frequency)
             {
@@ -29,7 +29,7 @@ namespace CfAnalytics.QuantLib.InternalUtils
             }
         }
 
-        public static CfFreq ToCfFrequency(this QlFreq frequency)
+        internal static CfFreq ToCfFrequency(this QlFreq frequency)
         {
             switch (frequency)
             {

@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace QuantLib
+﻿namespace CfAnalytics.QuantLib.InternalUtils
 {
-    public static class ForeignExchangeForwardExtension
+    internal static class FxFwdExt
     {
-        public static string Print(this ForeignExchangeForward fxFwd)
+        internal static string Print(this global::QuantLib.ForeignExchangeForward fxFwd)
         {
             var baseCcy = fxFwd.baseCurrency();
             var termCcy = fxFwd.termCurrency();

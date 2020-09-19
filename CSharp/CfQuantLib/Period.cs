@@ -4,7 +4,7 @@ using QlPeriod = QuantLib.Period;
 
 namespace CfAnalytics.QuantLib
 {
-    public readonly struct Period : IEquatable<Period>, IComparable<Period>, IComparable
+    public readonly struct Period : IEquatable<Period>, IComparable<Period>, IComparable, IDisposable
     {
         internal QlPeriod QlObj { get; }
 
@@ -25,6 +25,11 @@ namespace CfAnalytics.QuantLib
 
         public int Length => QlObj.length();
         public TimeUnit Units => QlObj.units().ToTimeUnit();
+
+        public Utilities.Period AsCfPeriod()
+        {
+            return new Utilities.Period(Length, Units);
+        }
 
         #region Equality members
 
@@ -118,6 +123,15 @@ namespace CfAnalytics.QuantLib
         public static bool operator >=(Period left, Period right)
         {
             return left.CompareTo(right) >= 0;
+        }
+
+        #endregion
+
+        #region IDisposable
+
+        public void Dispose()
+        {
+            QlObj?.Dispose();
         }
 
         #endregion

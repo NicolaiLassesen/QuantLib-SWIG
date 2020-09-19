@@ -1,7 +1,7 @@
 1. Make sure that QuantLib builds
 2. Run SWIG to generate the quantlib_wrap.cpp file and C# wrapper files by going to the ".\QuantLib-SWIG\CSharp" folder in a command prompt and running swig.cmd
 3. Make sure the QL_DIR environment variable holds the location of the QuantLib root directory - alternatively ensure that the NQuantLibc project has the QuantLib root directory in its additional include directories
-3. Make sure the QL_DIR environment variable holds the location of the QuantLib root directory - alternatively ensure that the NQuantLibc project has the QuantLib build directory in its additional library directories
+3. Make sure the QL_DIR environment variable holds the location of the QuantLib build directory - alternatively ensure that the NQuantLibc project has the QuantLib build directory in its additional library directories
 4. Make sure that the NQuantLibc project has the boost root directory in its additional include directories
 4. Build the c++ project NQuantLibc - note the dll created here needs to be always shipped with the NQuantlib C# built dll. It needs to be placed in a location that is readable by the DLLImport attribute
 5. Build the C# project NQuantLib

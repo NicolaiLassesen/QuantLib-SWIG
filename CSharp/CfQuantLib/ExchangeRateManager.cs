@@ -17,6 +17,17 @@ namespace CfAnalytics.QuantLib
 
         public static ConversionType MoneyConversion
         {
+            get
+            {
+                var qlValue = QlMoney.getConversionType();
+                switch (qlValue)
+                {
+                    case QlMoney.ConversionType.NoConversion: return ConversionType.NoConversion;
+                    case QlMoney.ConversionType.BaseCurrencyConversion: return ConversionType.BaseCurrencyConversion;
+                    case QlMoney.ConversionType.AutomatedConversion: return ConversionType.AutomatedConversion;
+                    default: throw new ArgumentOutOfRangeException();
+                }
+            }
             set
             {
                 switch (value)
@@ -38,11 +49,8 @@ namespace CfAnalytics.QuantLib
 
         public static Currency BaseCurrency
         {
-            set
-            {
-                var ccy = value.ToQlCurrency();
-                QlMoney.setBaseCurrency(ccy);
-            }
+            get => QlMoney.getBaseCurrency().ToCfCurrency();
+            set => QlMoney.setBaseCurrency(value.ToQlCurrency());
         }
 
         public static void Add(Currency baseCurrency, Currency quoteCurrency, double rate, DateTime date)

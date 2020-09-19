@@ -49,6 +49,7 @@ class Instrument : public Observable {
   public:
     Real NPV() const;
     Real errorEstimate() const;
+    const Date& valuationDate() const;
     bool isExpired() const;
     void setPricingEngine(const boost::shared_ptr<PricingEngine>&);
     void recalculate();

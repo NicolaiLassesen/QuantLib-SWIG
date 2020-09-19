@@ -5,9 +5,9 @@ using CfConv = CfAnalytics.BusinessDayConvention;
 
 namespace CfAnalytics.QuantLib.InternalUtils
 {
-    public static class BdcExt
+    internal static class BdcExt
     {
-        public static QlConv ToQlConvention(this CfConv convention)
+        internal static QlConv ToQlConvention(this CfConv convention)
         {
             switch (convention)
             {
@@ -20,7 +20,7 @@ namespace CfAnalytics.QuantLib.InternalUtils
             }
         }
 
-        public static CfConv ToCfConvention(this QlConv convention)
+        internal static CfConv ToCfConvention(this QlConv convention)
         {
             switch (convention)
             {

@@ -4,9 +4,9 @@ using CfCompounding = CfAnalytics.Compounding;
 
 namespace CfAnalytics.QuantLib.InternalUtils
 {
-    public static class CompoundingExt
+    internal static class CompoundingExt
     {
-        public static QlCompounding ToQlCompounding(this CfCompounding compounding)
+        internal static QlCompounding ToQlCompounding(this CfCompounding compounding)
         {
             switch (compounding)
             {
@@ -19,7 +19,7 @@ namespace CfAnalytics.QuantLib.InternalUtils
             }
         }
 
-        public static CfCompounding ToCfCompounding(this QlCompounding compounding)
+        internal static CfCompounding ToCfCompounding(this QlCompounding compounding)
         {
             switch (compounding)
             {

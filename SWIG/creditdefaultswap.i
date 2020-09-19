@@ -94,6 +94,7 @@ class CreditDefaultSwap : public Instrument {
                                                     boost::shared_ptr<Claim>(),
                          const DayCounter& lastPeriodDayCounter = DayCounter(),
                          const bool rebatesAccrual = true);
+
     Protection::Side side() const;
     Real notional() const;
     Rate runningSpread() const;
@@ -109,6 +110,11 @@ class CreditDefaultSwap : public Instrument {
     }
     bool settlesAccrual() const;
     bool paysAtDefaultTime() const;
+    const Date& protectionStartDate() const;
+    const Date& protectionEndDate() const;
+    const Date& maturityDate() const;
+    bool rebatesAccrual() const;
+
     Rate fairSpread() const;
     Rate fairUpfront() const;
     Real couponLegBPS() const;
@@ -116,6 +122,8 @@ class CreditDefaultSwap : public Instrument {
     Real defaultLegNPV() const;
     Real upfrontBPS() const;
     Real upfrontNPV() const;
+    Real accrualRebateNPV() const;
+
     Rate impliedHazardRate(Real targetNPV,
                            const Handle<YieldTermStructure>& discountCurve,
                            const DayCounter& dayCounter,

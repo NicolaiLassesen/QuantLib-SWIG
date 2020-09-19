@@ -167,8 +167,8 @@ namespace FxForwardValuation
                 spotExchRate = spotExchRate.Inverse();
             var builder = new FxForwardPointTermStructure.Builder(todaysDate, spotExchRate)
             {
-                BaseCalendar = Calendar.UnitedStatesFederalReserve,
-                QuoteCalendar = Calendar.TARGET,
+                BaseCalendar = CalendarName.UnitedStatesFederalReserve,
+                QuoteCalendar = CalendarName.TARGET,
                 DayCounter = DayCounter.Actual360,
                 ForwardPoints = new[]
                 {
@@ -190,8 +190,8 @@ namespace FxForwardValuation
                 spotExchRate = spotExchRate.Inverse();
             var builder = new FxForwardPointTermStructure.Builder(todaysDate, spotExchRate)
             {
-                BaseCalendar = Calendar.TARGET,
-                QuoteCalendar = Calendar.UnitedStatesFederalReserve,
+                BaseCalendar = CalendarName.TARGET,
+                QuoteCalendar = CalendarName.UnitedStatesFederalReserve,
                 DayCounter = DayCounter.Actual360,
                 ForwardPoints = new[]
                 {
@@ -213,8 +213,8 @@ namespace FxForwardValuation
                 spotExchRate = spotExchRate.Inverse();
             var builder = new FxForwardPointTermStructure.Builder(todaysDate, spotExchRate)
             {
-                BaseCalendar = Calendar.UnitedKingdomSettlement,
-                QuoteCalendar = Calendar.TARGET,
+                BaseCalendar = CalendarName.UnitedKingdomSettlement,
+                QuoteCalendar = CalendarName.TARGET,
                 DayCounter = DayCounter.Actual360,
                 ForwardPoints = new[]
                 {
@@ -234,8 +234,8 @@ namespace FxForwardValuation
                 spotExchRate = spotExchRate.Inverse();
             var builder = new FxForwardPointTermStructure.Builder(todaysDate, spotExchRate)
             {
-                BaseCalendar = Calendar.TARGET,
-                QuoteCalendar = Calendar.UnitedKingdomSettlement,
+                BaseCalendar = CalendarName.TARGET,
+                QuoteCalendar = CalendarName.UnitedKingdomSettlement,
                 DayCounter = DayCounter.Actual360,
                 ForwardPoints = new[]
                 {
@@ -256,7 +256,7 @@ namespace FxForwardValuation
             {
                 SpotDays = 0,
                 Currency = Currency.EUR,
-                Calendar = Calendar.TARGET,
+                Calendar = CalendarName.TARGET,
                 DayCountBasis = DayCounter.ActualActualISDA,
                 DepositRollConvention = BusinessDayConvention.ModifiedFollowing,
                 DepositBasis = DayCounter.Actual360,
@@ -278,7 +278,7 @@ namespace FxForwardValuation
             {
                 SpotDays = 0,
                 Currency = Currency.USD,
-                Calendar = Calendar.UnitedStatesFederalReserve,
+                Calendar = CalendarName.UnitedStatesFederalReserve,
                 DayCountBasis = DayCounter.ActualActualISDA,
                 DepositRollConvention = BusinessDayConvention.ModifiedFollowing,
                 DepositBasis = DayCounter.Actual360,
@@ -300,7 +300,7 @@ namespace FxForwardValuation
             {
                 SpotDays = 0,
                 Currency = Currency.GBP,
-                Calendar = Calendar.UnitedKingdomSettlement,
+                Calendar = CalendarName.UnitedKingdomSettlement,
                 DayCountBasis = DayCounter.ActualActualISDA,
                 DepositRollConvention = BusinessDayConvention.ModifiedFollowing,
                 DepositBasis = DayCounter.Actual365FixedStandard,

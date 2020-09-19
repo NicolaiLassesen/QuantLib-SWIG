@@ -98,8 +98,14 @@ class Money {
         static void setConversionType(ConversionType type) {
             Money::conversionType = type;
         }
+        static ConversionType getConversionType() {
+            return Money::conversionType;
+        }
         static void setBaseCurrency(const Currency& c) {
             Money::baseCurrency = c;
+        }
+        static const Currency& getBaseCurrency() {
+            return Money::baseCurrency;
         }
     }
 };

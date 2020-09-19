@@ -59,6 +59,14 @@ class TimeSeries {
             (*self)[d] = value;
         }
         #endif
+        #if defined(SWIGCSHARP)
+        T get(const Date& d) {
+            return (*self)[d];
+        }
+        void set(const Date& d, const T& value) {
+            (*self)[d] = value;
+        }
+        #endif
     }
 };
 

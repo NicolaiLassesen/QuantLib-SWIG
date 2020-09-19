@@ -1,13 +1,11 @@
 ﻿using System;
 using CfAnalytics.QuantLib.InternalUtils;
 using CfAnalytics.Utilities;
-using QuantLib;
 using QlFxFwd = QuantLib.ForeignExchangeForward;
-// ReSharper disable InconsistentNaming
 
 namespace CfAnalytics.QuantLib.Instruments
 {
-    public class ForeignExchangeForward : Instrument<QlFxFwd>
+    public class ForeignExchangeForward : Instrument<FxFwdImpl>
     {
         public enum Type
         {
@@ -16,42 +14,41 @@ namespace CfAnalytics.QuantLib.Instruments
         }
 
         public ForeignExchangeForward(DateTime deliveryDate, Money baseNotional, ExchangeRate contractAllInRate)
-            : base(new QlFxFwd(deliveryDate, baseNotional.QlObj, contractAllInRate.QlObj))
+            : base(new FxFwdImpl(new QlFxFwd(deliveryDate, baseNotional.QlObj, contractAllInRate.QlObj)))
         {
         }
 
-        public DateTime DeliveryDate => QlObj.deliveryDate().AsDateTime();
-        public ExchangeRate ContractAllInRate => new ExchangeRate(QlObj.contractAllInRate());
-        public Currency BaseCurrency => QlObj.baseCurrency().ToCfCurrency();
-        public Currency QuoteCurrency => QlObj.termCurrency().ToCfCurrency();
-        public Type ForwardType => EnumUtils.GetEnumValue<Type>(QlObj.forwardType().ToString());
+        public DateTime DeliveryDate => Impl.QlObj.deliveryDate().AsDateTime();
+        public ExchangeRate ContractAllInRate => new ExchangeRate(Impl.QlObj.contractAllInRate());
+        public Currency BaseCurrency => Impl.QlObj.baseCurrency().ToCfCurrency();
+        public Currency QuoteCurrency => Impl.QlObj.termCurrency().ToCfCurrency();
+        public Type ForwardType => EnumUtils.GetEnumValue<Type>(Impl.QlObj.forwardType().ToString());
 
         //QlObj.foreignExchangeTerms().settlementDays();
         //QlObj.foreignExchangeTerms().businessDayConvention();
         //QlObj.foreignExchangeTerms().calendar();
         //QlObj.foreignExchangeTerms().dayCounter();
 
-        public Money ContractNotionalAmountBase() => new Money(QlObj.contractNotionalAmountBase());
-        public Money ContractNotionalAmountQuote() => new Money(QlObj.contractNotionalAmountTerm());
+        public Money ContractNotionalAmountBase() => new Money(Impl.QlObj.contractNotionalAmountBase());
+        public Money ContractNotionalAmountQuote() => new Money(Impl.QlObj.contractNotionalAmountTerm());
 
-        public Money ForwardGrossValueBase() => new Money(QlObj.forwardGrossValueBase());
-        public Money ForwardGrossValueQuote() => new Money(QlObj.forwardGrossValueTerm());
+        public Money ForwardGrossValueBase() => new Money(Impl.QlObj.forwardGrossValueBase());
+        public Money ForwardGrossValueQuote() => new Money(Impl.QlObj.forwardGrossValueTerm());
 
-        public Money ForwardNetValueBase() => new Money(QlObj.forwardNetValueBase());
-        public Money ForwardNetValueQuote() => new Money(QlObj.forwardNetValueTerm());
+        public Money ForwardNetValueBase() => new Money(Impl.QlObj.forwardNetValueBase());
+        public Money ForwardNetValueQuote() => new Money(Impl.QlObj.forwardNetValueTerm());
 
-        public Money PresentNetValueBase() => new Money(QlObj.presentNetValueBase());
-        public Money PresentNetValueQuote() => new Money(QlObj.presentNetValueTerm());
+        public Money PresentNetValueBase() => new Money(Impl.QlObj.presentNetValueBase());
+        public Money PresentNetValueQuote() => new Money(Impl.QlObj.presentNetValueTerm());
 
-        public double FairForwardPoints() => QlObj.fairForwardPoints();
+        public double FairForwardPoints() => Impl.QlObj.fairForwardPoints();
+    }
 
-        #region Overrides of Object
-
-        public override string ToString()
+    public class FxFwdImpl : InstrumentImpl<QlFxFwd>
+    {
+        public FxFwdImpl(QlFxFwd qlObj)
+            : base(qlObj)
         {
-            return QlObj.ToString();
         }
-
-        #endregion
     }
 }

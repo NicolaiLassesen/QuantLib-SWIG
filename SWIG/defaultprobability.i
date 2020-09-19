@@ -207,7 +207,11 @@ class SpreadCdsHelper : public DefaultProbabilityHelper {
             Real recoveryRate,
             const Handle<YieldTermStructure>& discountCurve,
             bool settlesAccrual = true,
-            bool paysAtDefaultTime = true);
+            bool paysAtDefaultTime = true,
+            const Date& startDate = Date(),
+            const DayCounter& lastPeriodDayCounter = DayCounter(),
+            const bool rebatesAccrual = true,
+            const CreditDefaultSwap::PricingModel model = CreditDefaultSwap::Midpoint);
     SpreadCdsHelper(
             Rate spread,
             const Period& tenor,
@@ -220,7 +224,11 @@ class SpreadCdsHelper : public DefaultProbabilityHelper {
             Real recoveryRate,
             const Handle<YieldTermStructure>& discountCurve,
             bool settlesAccrual = true,
-            bool paysAtDefaultTime = true);
+            bool paysAtDefaultTime = true,
+            const Date& startDate = Date(),
+            const DayCounter& lastPeriodDayCounter = DayCounter(),
+            const bool rebatesAccrual = true,
+            const CreditDefaultSwap::PricingModel model = CreditDefaultSwap::Midpoint);
 };
 
 
@@ -241,7 +249,11 @@ class UpfrontCdsHelper : public DefaultProbabilityHelper {
             const Handle<YieldTermStructure>& discountCurve,
             Natural upfrontSettlementDays=0,
             bool settlesAccrual = true,
-            bool paysAtDefaultTime = true);
+            bool paysAtDefaultTime = true,
+            const Date& startDate = Date(),
+            const DayCounter& lastPeriodDayCounter = DayCounter(),
+            const bool rebatesAccrual = true,
+            const CreditDefaultSwap::PricingModel model = CreditDefaultSwap::Midpoint);
     UpfrontCdsHelper(
             Rate upfront,
             Rate spread,
@@ -256,7 +268,11 @@ class UpfrontCdsHelper : public DefaultProbabilityHelper {
             const Handle<YieldTermStructure>& discountCurve,
             Natural upfrontSettlementDays=0,
             bool settlesAccrual = true,
-            bool paysAtDefaultTime = true);
+            bool paysAtDefaultTime = true,
+            const Date& startDate = Date(),
+            const DayCounter& lastPeriodDayCounter = DayCounter(),
+            const bool rebatesAccrual = true,
+            const CreditDefaultSwap::PricingModel model = CreditDefaultSwap::Midpoint);
 };
 
 
@@ -266,10 +282,12 @@ class UpfrontCdsHelper : public DefaultProbabilityHelper {
 %{
 using QuantLib::HazardRate;
 using QuantLib::DefaultDensity;
+using QuantLib::SurvivalProbability;
 %}
 
 struct HazardRate {};
 struct DefaultDensity {};
+struct SurvivalProbability {};
 
 // curve
 
@@ -334,6 +352,7 @@ class Name : public DefaultProbabilityTermStructure {
 
 // add other instantiations if you need them
 export_piecewise_default_curve(PiecewiseFlatHazardRate,HazardRate,BackwardFlat);
+export_piecewise_default_curve(PiecewiseLogLinearSurvival,SurvivalProbability,LogLinear);
 
 
 #endif

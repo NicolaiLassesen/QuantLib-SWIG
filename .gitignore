@@ -95,3 +95,5 @@ R/QuantLib.RData
 .vscode
 *.DotSettings
 /.vs
+/CSharp/examples/CdsValuation/.vs
+/CSharp/examples/IrsValuation/.vs
