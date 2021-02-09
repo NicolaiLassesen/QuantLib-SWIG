@@ -58,8 +58,6 @@ namespace CfAnalytics.QuantLib.TermStructures.YieldTermStructures
 
         private static QlRateHelperList GetRateHelperList(DateTime tradeDate, Currency currency, XmlDocument xmlDoc = null)
         {
-            if (xmlDoc != null)
-                xmlDoc = Download(currency, tradeDate);
             try
             {
                 XmlNode curveData = xmlDoc["interestRateCurve"];
@@ -67,7 +65,7 @@ namespace CfAnalytics.QuantLib.TermStructures.YieldTermStructures
                     throw new ApplicationException("Unexpected XML structure for ISDA curve: {currency}, {tradeDate:yyyy-MM-dd}");
 
                 DateTime effectiveDate = DateTime.Parse(curveData["effectiveasof"].InnerText);
-                if (effectiveDate != tradeDate)
+                if ((effectiveDate - tradeDate).TotalDays > 3.0)
                     throw new ApplicationException($"Trade date mismatch in ISDA curve construction. Expected '{tradeDate:yyyy-MM-dd}', got '{effectiveDate:yyyy-MM-dd}'");
 
                 Currency crncy = EnumUtils.GetCurrency(curveData["currency"].InnerText.ToUpper());

@@ -26,7 +26,7 @@ namespace CdsValuation
         {
             DateTime startTime = DateTime.Now;
 
-            var todaysDate = new DateTime(2014, 10, 21);
+            var todaysDate = new DateTime(2020, 9, 19);
             Settings.EvaluationDate = todaysDate;
             Console.WriteLine($"Today: {todaysDate:D}\n");
 
@@ -93,7 +93,13 @@ namespace CdsValuation
                 DiscountCurve = discountCurve
             };
             var defProbTs = new DefaultProbabilityTermStructure(defProbBuilder);
-            DateTime lookAtDate = new DateTime(2019, 6, 21);
+            //foreach (var helper in defProbBuilder.RateHelpers)
+            //{
+            //    var zero = discountCurve.ZeroRate(helper.PillarDate);
+            //    var discount = discountCurve.Discount(helper.PillarDate);
+            //    Console.WriteLine($"{helper.PillarDate:d}\t{zero}\t{discount}");
+            //}
+            DateTime lookAtDate = new DateTime(2020, 9, 23);
             double defProb = defProbTs.DefaultProbability(lookAtDate, true);
             double survProb = defProbTs.SurvivalProbability(lookAtDate, true);
             double hazard = defProbTs.HazardRate(lookAtDate, true);
@@ -111,6 +117,11 @@ namespace CdsValuation
 
             Console.WriteLine("Pricing of example trade with ISDA engine:");
             Console.WriteLine($"NPV = {npv:N}");
+
+            DateTime endTime = DateTime.Now;
+            TimeSpan delta = endTime - startTime;
+            Console.WriteLine("\nRun completed in {0} s", delta.TotalSeconds);
+            Console.WriteLine();
         }
     }
 }

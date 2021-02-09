@@ -18,7 +18,7 @@
 using System;
 using QuantLib;
 
-namespace EquityOptionTest
+namespace EquityOption
 {
     internal class EquityOption
     {

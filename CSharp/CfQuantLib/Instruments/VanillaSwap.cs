@@ -1,28 +1,23 @@
 ﻿using System;
+using CfAnalytics.QuantLib.InternalUtils;
 using QlIrs = QuantLib.VanillaSwap;
 
 namespace CfAnalytics.QuantLib.Instruments
 {
     public class VanillaSwap : Instrument<IrsImpl>
     {
-        public enum Type
-        {
-            Payer,
-            Receiver
-        }
-
         public class Builder
         {
-            public Builder(DateTime startDate, DateTime maturity)
+            public Builder(DateTime effectiveDate, DateTime maturity)
             {
-                StartDate = startDate;
+                EffectiveDate = effectiveDate;
                 Maturity = maturity;
             }
 
-            public DateTime StartDate { get; }
+            public DateTime EffectiveDate { get; }
             public DateTime Maturity { get; }
 
-            public Type Type { get; set; }
+            public SwapType Type { get; set; }
             public double Notional { get; set; }
             public CalendarName Calendar { get; set; }
             public double FixedRate { get; set; }
@@ -37,7 +32,7 @@ namespace CfAnalytics.QuantLib.Instruments
 
             internal QlIrs Build()
             {
-                var fixedScheduleBuilder = new Schedule.Builder(StartDate, Maturity)
+                var fixedScheduleBuilder = new Schedule.Builder(EffectiveDate, Maturity)
                 {
                     Frequency = FixedFrequency,
                     Calendar = Calendar,
@@ -45,7 +40,7 @@ namespace CfAnalytics.QuantLib.Instruments
                     Rule = Utilities.Schedule.DateGeneration.Backward
                 };
                 var fixedSchedule = new Schedule(fixedScheduleBuilder);
-                var floatScheduleBuilder = new Schedule.Builder(StartDate, Maturity)
+                var floatScheduleBuilder = new Schedule.Builder(EffectiveDate, Maturity)
                 {
                     Frequency = FloatFrequency,
                     Calendar = Calendar,
@@ -53,7 +48,7 @@ namespace CfAnalytics.QuantLib.Instruments
                     Rule = Utilities.Schedule.DateGeneration.Backward
                 };
                 var floatSchedule = new Schedule(floatScheduleBuilder);
-                return new QlIrs(Type == Type.Payer ? QlIrs.Type.Payer : QlIrs.Type.Receiver,
+                return new QlIrs(Type == SwapType.Payer ? QlIrs.Type.Payer : QlIrs.Type.Receiver,
                     Notional, fixedSchedule.QlObj, FixedRate, FixedDaycount.ToQlDayCounter(),
                     floatSchedule.QlObj, (global::QuantLib.IborIndex)FloatIndex.Impl.QlObj, FloatSpread, FloatDaycount.ToQlDayCounter());
             }
@@ -63,6 +58,17 @@ namespace CfAnalytics.QuantLib.Instruments
             : base(new IrsImpl(builder.Build()))
         {
         }
+
+        public DateTime EffectiveDate => Impl.QlObj.startDate().AsDateTime();
+        public DateTime MaturityDate => Impl.QlObj.maturityDate().AsDateTime();
+        public double Notional => Impl.QlObj.nominal();
+
+        public double FairRate => Impl.QlObj.fairRate();
+        public double FairSpread => Impl.QlObj.fairSpread();
+        public double FixedLegNpv => Impl.QlObj.fixedLegNPV();
+        public double FixedLegBps => Impl.QlObj.fixedLegBPS();
+        public double FloatLegNpv => Impl.QlObj.floatingLegNPV();
+        public double FloatLegBps => Impl.QlObj.floatingLegBPS();
     }
 
     public class IrsImpl : InstrumentImpl<QlIrs>

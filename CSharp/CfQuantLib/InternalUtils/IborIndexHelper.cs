@@ -211,7 +211,7 @@ namespace CfAnalytics.QuantLib.InternalUtils
 
         public static IborIndex GetIborIndex(string iborIndex, YieldTermStructure forwardingCurve)
         {
-            var idx = GetIborIndexInternal(iborIndex, forwardingCurve.GetHandle());
+            var idx = GetIborIndexInternal(iborIndex, forwardingCurve?.GetHandle());
             return idx != null ? new IborIndex(idx) : null;
         }
 

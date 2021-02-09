@@ -1,6 +1,6 @@
 ﻿using System;
 using CfAnalytics.QuantLib.InternalUtils;
-using QlCalendar=QuantLib.Calendar;
+using QlCalendar = QuantLib.Calendar;
 
 // ReSharper disable InconsistentNaming
 
@@ -21,6 +21,7 @@ namespace CfAnalytics.QuantLib
         }
     }
 
+    [Flags]
     public enum CalendarName
     {
         Unknown,
@@ -48,7 +49,7 @@ namespace CfAnalytics.QuantLib
 
     internal static class CalendarExt
     {
-        internal static global::QuantLib.Calendar ToQlCalendar(this CalendarName calendar)
+        internal static QlCalendar ToQlCalendar(this CalendarName calendar)
         {
             switch (calendar)
             {

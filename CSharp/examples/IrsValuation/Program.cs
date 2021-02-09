@@ -1,18 +1,13 @@
 ﻿using System;
 using CfAnalytics;
 using CfAnalytics.QuantLib;
-using CfAnalytics.QuantLib.PricingEngines.Credit;
-using CfAnalytics.QuantLib.TermStructures.DefaultProbabilityTermStructures;
 using CfAnalytics.QuantLib.TermStructures.YieldTermStructures;
-using QuantLib;
 using BusinessDayConvention = CfAnalytics.BusinessDayConvention;
 using Currency = CfAnalytics.Currency;
 using DayCounter = CfAnalytics.QuantLib.DayCounter;
-using DefaultProbabilityTermStructure = CfAnalytics.QuantLib.TermStructures.DefaultProbabilityTermStructure;
 using DiscountingSwapEngine = CfAnalytics.QuantLib.PricingEngines.Ir.DiscountingSwapEngine;
 using Frequency = CfAnalytics.Frequency;
 using IborIndex = CfAnalytics.QuantLib.IborIndex;
-using IndexManager = CfAnalytics.QuantLib.IndexManager;
 using Period = CfAnalytics.QuantLib.Period;
 using Settings = CfAnalytics.QuantLib.Settings;
 using TimeUnit = CfAnalytics.TimeUnit;
@@ -21,11 +16,11 @@ using YieldTermStructure = CfAnalytics.QuantLib.TermStructures.YieldTermStructur
 
 // ReSharper disable InconsistentNaming
 
-namespace CdsValuation
+namespace IrsValuation
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             DateTime startTime = DateTime.Now;
 
@@ -86,7 +81,7 @@ namespace CdsValuation
             var idx = IborIndex.GetIborIndex(Currency.EUR, "EURIBOR", "6M", swapCurve);
             var irsBuilder = new VanillaSwap.Builder(new DateTime(2020, 9, 10), new DateTime(2024, 9, 10))
             {
-                Type = VanillaSwap.Type.Payer,
+                Type = SwapType.Payer,
                 Notional = 1000000.0,
                 Calendar = CalendarName.TARGET,
                 FixedRate = -0.00449,
@@ -105,6 +100,11 @@ namespace CdsValuation
 
             Console.WriteLine("\nPricing of IRS with simple discounting engine:");
             Console.WriteLine($"NPV = {npv:N}");
+
+            DateTime endTime = DateTime.Now;
+            TimeSpan delta = endTime - startTime;
+            Console.WriteLine("\nRun completed in {0} s", delta.TotalSeconds);
+            Console.WriteLine();
         }
     }
 }
