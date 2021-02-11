@@ -47,7 +47,7 @@ using QuantLib::InterpolatedFxForwardPointTermStructure;
 %}
 
 namespace std {
-    %template(ForwardExchangeRateVector) vector<ForwardExchangeRate>;
+    %template(ForwardExchangeRateVector) vector<boost::shared_ptr<ForwardExchangeRate>>;
 }
 
 %shared_ptr(InterpolatedFxForwardPointTermStructure<Linear>);
@@ -62,7 +62,7 @@ class InterpolatedFxForwardPointTermStructure : public FxForwardPointTermStructu
                                             const Calendar& calendar = Calendar(),
                                             const Interpolator& interpolator = Interpolator());
     InterpolatedFxForwardPointTermStructure(const Date& referenceDate,
-    	                                      const std::vector<ForwardExchangeRate>& fwdExchangeRates,
+    	                                    const std::vector<boost::shared_ptr<ForwardExchangeRate>>& fwdExchangeRates,
                                             const DayCounter& dayCounter,
                                             const Calendar& calendar = Calendar(),
                                             const Interpolator& interpolator = Interpolator());

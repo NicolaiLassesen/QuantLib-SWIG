@@ -87,18 +87,20 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\dev\boost_1_72_0;C:\dev\Quantlib;$(QL_DIR);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\dev\boost_1_75_0;C:\dev\Quantlib;$(QL_DIR);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;QUANTLIBWRAPPER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
       <OutputFile>$(OutDir)NQuantLibc64.dll</OutputFile>
-      <AdditionalLibraryDirectories>C:\dev\boost_1_72_0\stage\lib;C:\dev\Quantlib\lib;$(QL_DIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\dev\boost_1_75_0\stage\lib;C:\dev\Quantlib\lib;$(QL_DIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -110,18 +112,20 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\dev\boost_1_72_0;C:\dev\Quantlib;$(QL_DIR);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\dev\boost_1_75_0;C:\dev\Quantlib;$(QL_DIR);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;QUANTLIBWRAPPER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
       <OutputFile>$(OutDir)NQuantLibc64.dll</OutputFile>
-      <AdditionalLibraryDirectories>C:\dev\boost_1_72_0\stage\lib;C:\dev\Quantlib\lib;$(QL_DIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\dev\boost_1_75_0\stage\lib;C:\dev\Quantlib\lib;$(QL_DIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -136,9 +140,10 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>C:\dev\boost_1_72_0;C:\dev\Quantlib;$(QL_DIR);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\dev\boost_1_75_0;C:\dev\Quantlib;$(QL_DIR);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;QUANTLIBWRAPPER_EXPORTS;_cplusplus;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -147,7 +152,7 @@
     </ClCompile>
     <Link>
       <OutputFile>$(OutDir)NQuantLibc64.dll</OutputFile>
-      <AdditionalLibraryDirectories>C:\dev\boost_1_72_0\stage\lib;C:\dev\Quantlib\lib;$(QL_DIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\dev\boost_1_75_0\stage\lib;C:\dev\Quantlib\lib;$(QL_DIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)NQuantLibc64.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
@@ -158,9 +163,10 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>C:\dev\boost_1_72_0;C:\dev\Quantlib;$(QL_DIR);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\dev\boost_1_75_0;C:\dev\Quantlib;$(QL_DIR);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;QUANTLIBWRAPPER_EXPORTS;_cplusplus;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -169,14 +175,15 @@
     </ClCompile>
     <Link>
       <OutputFile>$(OutDir)NQuantLibc64.dll</OutputFile>
-      <AdditionalLibraryDirectories>C:\dev\boost_1_72_0\stage\lib;C:\dev\Quantlib\lib;$(QL_DIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\dev\boost_1_75_0\stage\lib;C:\dev\Quantlib\lib;$(QL_DIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)NQuantLibc64.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <ImportLibrary>$(OutDir)NQuantLibc64.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy whatever</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
